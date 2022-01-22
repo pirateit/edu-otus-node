@@ -6,7 +6,7 @@
 <h3 align="center">Node.js Developer (OTUS)</h3>
 
   <p align="center">
-    Home tasks from course
+    Home tasks from course. Group #node-2021-12.
   </p>
 </div>
 
