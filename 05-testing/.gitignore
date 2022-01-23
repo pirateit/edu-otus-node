@@ -1,0 +1,11 @@
+# Dependency directory
+node_modules
+
+# Editors
+.idea
+*.iml
+.editorconfig
+
+# Jest
+coverage
+__snapshots__
