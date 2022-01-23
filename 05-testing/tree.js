@@ -14,11 +14,11 @@ const argv = yargs.scriptName("node tree")
   .version(false)
   .argv;
 
-function buildTree(tree) {
+function buildTree(tree, depthArg) {
   let finalTree = '';
 
   function nodeTree(tree, depth = 0, parentLength = 0, isLast = false, isParentLast = false, parentsLastCounter = 0, pnlc = 0, dividers = []) {
-    if (depth > Number(argv.depth)) return;
+    if (depth > Number(depthArg)) return;
 
     if (depth > 1) {
       const fdividers = [...dividers]
@@ -129,9 +129,9 @@ if (argv._.length === 0) {
     }]
   };
 
-  console.log(buildTree(treeSample));
+  console.log(buildTree(treeSample, argv.depth));
 } else {
-  buildDirectoryTree(argv._[0]).then(directoryTree => console.log(`${buildTree(directoryTree.newTree)}\n${directoryTree.directoriesCount} directories, ${directoryTree.filesCount} files`)).catch(err => {
+  buildDirectoryTree(argv._[0]).then(directoryTree => console.log(`${buildTree(directoryTree.newTree, argv.depth)}\n${directoryTree.directoriesCount} directories, ${directoryTree.filesCount} files`)).catch(err => {
     console.log(err);
     yargs.showHelp();
   });
