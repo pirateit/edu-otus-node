@@ -2,9 +2,10 @@ const mock = require('mock-fs');
 const { buildTree, buildDirectoryTree } = require('./tree');
 
 describe('Custom tree drawing', () => {
-  it('Test correct custom tree drawing', () => {
-    expect.assertions(1);
-    const treeSample = {
+  let treeSample;
+
+  beforeEach(() => {
+    treeSample = {
       "name": 1,
       "items": [{
         "name": 2,
@@ -17,6 +18,11 @@ describe('Custom tree drawing', () => {
         "items": [{ "name": 3, "items": [{ "name": 4, "items": [{ "name": 5 }, { "name": 5 }] }] }]
       }]
     };
+  });
+
+  it('Test correct custom tree drawing', () => {
+    expect.assertions(1);
+
     const resultTree = `1
 ├── 2
 │   ├── 3
@@ -36,6 +42,21 @@ describe('Custom tree drawing', () => {
             └── 5
 `;
     return expect(buildTree(treeSample)).toBe(resultTree);
+  });
+  it('Test correct depth level', () => {
+    expect.assertions(1);
+
+    const resultTree = `1
+├── 2
+│   ├── 3
+│   ├── 3
+│   └── 3
+├── 2
+│   └── 3
+└── 2
+    └── 3
+`;
+    return expect(buildTree(treeSample, 2)).toBe(resultTree);
   });
 });
 
