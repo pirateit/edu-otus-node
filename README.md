@@ -17,7 +17,7 @@
       <a href="#01-lesson---introduction-to-node-and-npm">01 Lesson - Introduction to Node and NPM</a>
     </li>
     <li>
-      <a href="#04-lesson---streams">01 Lesson - Streams</a>
+      <a href="#04-lesson---streams">04 Lesson - Streams</a>
     </li>
     <li>
       <a href="#05-lesson---testing">05 Lesson - Testing</a>
