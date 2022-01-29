@@ -26,18 +26,17 @@ const createFile = () => {
   }
 
   writableStream.end();
-  process.stdout.write('File with random numbers created');
+  process.stdout.write('File with random numbers created.\n');
 };
 
-
-let filesCounter = 1;
 const splitFile = () => {
   return new Promise((resolve, reject) => {
     if (!fs.existsSync('./temp')) {
       fs.mkdirSync('./temp');
     }
 
-    const readableStream = fs.createReadStream('./_numbers.txt');
+    const readableStream = fs.createReadStream('./numbers.txt');
+    const files = [];
     let filesCounter = 0;
     let linesCounter = 0;
 
@@ -53,6 +52,7 @@ const splitFile = () => {
       filesCounter++
       const writableStream = fs.createWriteStream(`./temp/${filesCounter}.txt`);
       writableStream.write(lines.join('\n') + '\n');
+      files.push(`./temp/${filesCounter}.txt`)
       done();
     }
 
@@ -62,61 +62,55 @@ const splitFile = () => {
       done();
     }
 
-    readableStream.on('end', () => resolve({ filesCounter, linesCounter }));
+    readableStream.on('end', () => {
+      process.stdout.write(`File splitted to ${filesCounter} parts.\n`);
+      resolve({ files, linesCounter })
+    });
     readableStream.pipe(liner);
   })
 };
 
-const joinFiles = async (files) => {
-  console.log(files)
+function streamAllFiles(files, min) {
+  return new Promise(async (resolve, reject) => {
+    let num = 0;
+    let max = 99999;
+    const streams = await files.map((file, index) => {
+      const readableStream = fs.createReadStream(file);
 
-  const streams = [];
-  for (let i = 1; i < files.filesCounter; i += 1) {
-    const readable = fs.createReadStream(`./temp/${i}.txt`);
+      const rl = readline.createInterface({
+        input: readableStream,
+        terminal: false
+      });
 
-    // readable.on('end', () => {
-    //   if (streams[i + 1]) {
-    //     streams[i + 1].resume();
-    //   }
-    // });
+      rl.on('line', (line) => {
+        if (line && +line > min && +line < max) {
+          max = +line;
+          num = +line
+        }
+      })
 
-    streams.push(readable);
+      rl.once('close', () => {
+        resolve(num);
+      });
+    });
+  })
+}
+
+const joinFiles = async (filesData) => {
+  process.stdout.write(`Sorting started...`);
+
+  let min = 0;
+
+  for (let i = 1; i <= filesData.linesCounter; i += 1) {
+    min = await streamAllFiles(filesData.files, min);
+    fs.appendFileSync('./sorted_numbers.txt', `${min}\n`);
   }
 
-    let min = -1;
-    // for (let i = 1; i < 5; i++) {
-    let count = 0;
-    let mid = 99999;
-    (async function google(stream = streams[0]) {
-      console.log(min)
-      try {
-        const rl = readline.createInterface({
-          input: stream.resume(),
-          crlfDelay: Infinity
-        });
-
-        rl.on('line', (line) => {
-          if (Number(line) > min && Number(line) < mid) {
-            mid = Number(line)
-            min = mid;
-          }
-        });
-
-        await once(rl, 'close');
-
-        count += 1
-      } catch (err) {
-        console.error(err);
-      }
-      min = mid;
-      return google(streams[count])
-    })();
-  // }
-
-  // fs.appendFile('./sorted_numbers.txt', String(min), (err) => console.log(err))
+  process.stdout.write(`Sorting ended to file sorted_numbers.txt.`);
 }
 
 (async () => {
+  createFile();
   const files = await splitFile();
   joinFiles(files);
 })()
