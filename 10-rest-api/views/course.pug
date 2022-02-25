@@ -1,0 +1,24 @@
+extends layout.pug
+
+block content
+  main
+    .container.course
+      aside.course__nav
+        nav
+          ul.course__nav-list
+            li.course__nav-item
+              a(href="#descrition") Описание
+            li.course__nav-item
+              a(href="#lessons") Уроки
+      section.course__content
+        article#description
+          h2 Описание
+          p= course.description
+        article#lessons
+          h2 Уроки
+          each lesson in course.lessons
+            h3= course.lessons.indexOf(lesson) + 1 + '. ' + lesson.title
+            p= lesson.description
+            if course.hasAccess
+              div.course__lesson-link
+                a.btn.btn-stroke(href=course.id + "/lessons/" + lesson._id) Перейти к уроку

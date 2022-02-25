@@ -1,0 +1,259 @@
+:root {
+  --color-blue-dark: #437fc7;
+  --color-blue-light: #edf6ff;
+  --color-green: #7dce55;
+  --color-red: #e23636;
+  --color-white: #fff;
+  --color-yellow: #edb95e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+h1, h2 {
+  text-transform: uppercase;
+}
+
+h2 {
+  margin: 0 0 25px 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+button {
+  border: none;
+  background: transparent;
+}
+
+label {
+  display: block;
+}
+
+header {
+  padding: 25px 0 !important;
+}
+
+main {
+  margin: 50px 0;
+}
+
+section {
+  padding: 25px 0;
+}
+
+section:first-of-type {
+  padding-top: 0;
+}
+
+section:last-of-type {
+  padding-bottom: 0;
+}
+
+article:not(:last-child) {
+  margin-bottom: 50px;
+}
+
+/* Elements */
+.btn {
+  padding: 15px 30px;
+  cursor: pointer;
+  border-radius: 25px;
+  font-weight: 600;
+}
+
+.btn-fill {
+  color: var(--color-white);
+  background-color: var(--color-blue-dark);
+}
+
+.btn-stroke {
+  color: var(--color-blue-dark);
+  border: 2px solid var(--color-blue-dark);
+  background-color: transparent;
+}
+
+.btn-fill_red {
+  background-color: var(--color-red);
+}
+
+.btn-stroke_red {
+  color: var(--color-red);
+  border-color: var(--color-red);
+}
+
+.btn_small {
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.message {
+  padding: 25px 50px;
+  display: none;
+  text-align: center;
+  font-weight: 600;
+}
+
+.message-success {
+  background-color: var(--color-green);
+}
+
+.message-warning {
+  background-color: var(--color-yellow);
+}
+
+.message-error {
+  color: var(--color-white);
+  background-color: var(--color-red);
+}
+
+.form__section:not(:last-child) {
+  margin-bottom: 50px;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 15px;
+  max-width: 1200px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.hero {
+  color: var(--color-white);
+  background-image: url('../img/hero.jpg');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+  border-radius: 0 0 25px 25px;
+}
+
+.hero__container {
+  padding: 80px;
+  text-align: center;
+}
+
+.courses {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.courses__item {
+  margin-bottom: 50px;
+  width: calc(50% - 25px);
+  border-left: 5px solid var(--color-blue-dark);
+}
+
+.courses__item:nth-child(odd) {
+  margin-right: 25px;
+}
+
+.courses__item:nth-child(even) {
+  margin-left: 25px;
+}
+
+.courses__badge {
+  padding: 5px 25px;
+  display: inline-block;
+  color: var(--color-white);
+  background-color: var(--color-blue-dark);
+  border-radius: 0 15px 0 0;
+}
+
+.courses__container {
+  padding: 25px;
+  border-radius: 0 25px 25px 0;
+  box-shadow: 0px 10px 20px rgba(128, 128, 128, 0.25);
+}
+
+/* Course Page */
+.course {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.course__nav {
+  margin-right: 25px;
+  flex: 1 1 calc(25% - 25px);
+  text-align: right;
+}
+
+.course__nav-list {
+  padding: 25px 25px 25px 0;
+  background-color: var(--color-blue-light);
+  border-left: 3px solid var(--color-blue-dark);
+  border-radius: 0 25px 25px 0;
+}
+
+.course__nav-item:not(:last-child) {
+  margin-bottom: 25px;
+}
+
+.course__content {
+  margin-left: 25px;
+  flex: 1 1 calc(75% - 25px);
+}
+
+.course__lesson-link {
+  text-align: right;
+}
+
+/* Course Edit Page */
+.course__delete {
+  text-align: center;
+}
+
+.course__delete-form {
+  display: none;
+}
+
+/* Lesson Page */
+.lesson {
+  display: flex;
+}
+
+.lesson__video {
+  margin-right: 25px;
+  width: calc(60% - 25px);
+  min-height: 380px;
+}
+
+.lesson__attachments {
+  margin-left: 25px;
+  width: calc(40% - 25px);;
+}
+
+.lesson__att {
+  display: flex;
+}
+
+.lesson__att-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.lesson__att-img {
+  object-fit: contain;
+}

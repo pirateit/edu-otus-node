@@ -1,0 +1,28 @@
+extends layout.pug
+
+block content
+  main
+    .container
+      section
+        a.btn.btn-stroke(href="/courses/" + id + "/edit") Назад
+      section
+        form#edit-lesson-form(action=apiPath + "/courses/" + id + "/lessons/" + lesson.id, method="put")
+          input#id(type="hidden", name="id", value=id)
+          input#lid(type="hidden", name="lid", value=lesson.id)
+          label(for="title") Название урока
+          input(type="text", name="title", value=lesson.title)
+          label(for="description") Описание
+          textarea(name="description", cols="30", rows="10")
+            = lesson.description
+          label(for="video") Ссылка на видео (YouTube)
+          input(type="text", name="video", value=lesson.video)
+          #attachments
+            each att in lesson.attachments
+              - var attIndex = lesson.attachments.indexOf(att)
+              div
+                input(type="hidden", name="attachments["+attIndex+"]"+"[type]", value=att.type)
+                input(type="hidden", name="attachments["+attIndex+"]"+"[path]", value=att.path)
+                | #{att.type} #{att.path}
+          button#add-file.btn.btn-stroke + Файл
+          button#add-link.btn.btn-stroke + Ссылка
+          button.btn.btn-fill(type="submit") Сохранить

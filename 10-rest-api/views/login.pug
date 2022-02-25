@@ -1,0 +1,12 @@
+extends layout.pug
+
+block content
+  main
+    .container.auth
+      form#login-form(action=apiPath + "/api/auth/login", method="post")
+        label(for="email") E-mail
+        input(type="text", name="email")
+        label(for="password") Пароль
+        input(type="text", name="password")
+        button(type="submit") Войти
+      #msg-box
