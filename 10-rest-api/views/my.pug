@@ -1,0 +1,30 @@
+extends layout.pug
+
+block content
+  main
+    .container
+      section
+        h2 Открытые курсы
+        if user.courses.length
+          .courses
+            each course in user.courses
+              a.courses__item(href="/courses/" + course.id)
+                span.courses__badge Автор:&nbsp;#{course.author.firstName + ' ' + course.author.lastName}
+                .courses__container
+                  h3.courses__title= course.title
+                  p.courses__desc= course.description
+        else
+          | У Вас ещё нет курсов в подписке
+      section
+        h2 Мои курсы
+        if user.coursesOwner.length
+          .courses
+            each course in user.coursesOwner
+              .courses__item(href="/courses/" + course._id)
+                .courses__container
+                  h3.courses__title= course.title
+                  p.courses__desc= course.description
+                  a.btn.btn-fill(href="/courses/" + course.id + "/edit") Редактировать
+        else
+          | Вы ещё не создавали собственных курсов
+

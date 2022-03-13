@@ -1,0 +1,24 @@
+extends layout.pug
+
+block content
+  main
+    .container
+      section
+        a.btn.btn-stroke(href="/courses/" + id) Назад
+      section
+        .lesson
+          iframe.lesson__video(src="https://www.youtube.com/embed/" + lesson.video)
+          .lesson__attachments
+            h3 Дополнительные материалы
+            each att in lesson.attachments
+              .lesson__att
+                a(href=att.path, target="_blank")
+                  .lesson__att-icon
+                    case att.type
+                      when 'link'
+                        img.lesson__att-img(src="/img/icons/link.svg")
+                      when 'txt'
+                        img.lesson__att-img(src="/img/icons/file-txt.svg")
+                      default
+                        img.lesson__att-img(src="/img/icons/file.svg")
+                  = att.path

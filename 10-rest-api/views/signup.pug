@@ -1,0 +1,11 @@
+extends layout.pug
+
+block content
+  main
+    .container.auth
+      form#signup-form(action=apiPath + "/auth/signup", method="post")
+        label(for="email") E-mail
+        input(type="text", name="email")
+        label(for="password") Пароль
+        input(type="text", name="password")
+        button(type="submit") Зарегистрироваться

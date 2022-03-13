@@ -1,0 +1,58 @@
+extends layout.pug
+
+block content
+  main
+    .container
+      section
+        form#edit-course-form(action=apiPath + "/courses/" + course.id, method="put")
+          .form__section
+            h2 Общие данные
+            input#id(type="hidden", value=course.id)
+            label(for="title") Название
+            input(type="text", name="title", value=course.title)
+            label(for="description") Описание
+            textarea(type="text", name="description")
+              = course.description
+          .form__section
+            h2 Список уроков
+            #lessons-list
+              each lesson in course.lessons
+                - var lessonIndex = course.lessons.indexOf(lesson);
+                div
+                  button
+                    img(src="/img/icons/up-arrow.svg", width="25", height="25")
+                  button
+                    img(src="/img/icons/down-arrow.svg", width="25", height="25")
+                  input.lesson-counter(type="hidden", value=lessonIndex)
+                  span= lessonIndex + 1 + '. '
+                  span= lesson.title
+                  input(type="hidden", name="lessons[" + lessonIndex + "][id]", placeholder="Название", value=lesson._id)
+                  a.btn.btn_small.btn-stroke(href="/courses/" + course.id + "/lessons/" + lesson._id + "/edit")
+                    img(src="/img/icons/edit.svg", width="15", height="15", alt="Редактировать урок")
+                    | Редактировать
+                  button.btn.btn_small.btn-stroke.btn-stroke_red.lesson-delete
+                    img(src="/img/icons/delete.svg", width="15", height="15", alt="Удалить урок")
+                    | Удалить
+                  #attachments
+                    each attachment in lesson.attachments
+                      span= attachment.type, attachment.path
+            button#add-lesson.btn.btn-stroke + Добавить урок
+          .form__section
+            h2 Доступ к курсу
+            #access-list
+              each userAccess in course.access
+                div
+                  input(type="checkbox", name="access", value=userAccess._id, checked)
+                  | #{userAccess.firstName} #{userAccess.lastName} (#{userAccess.email})
+            h3 Добавить пользователя по E-mail
+            input#access-list-input(type="text", placeholder="E-mail пользователя")
+            button#access-list-btn.btn.btn-stroke Добавить
+          .form__section
+            button.btn.btn-fill(type="submit") Сохранить
+      section.course__delete
+        button#delete.btn.btn-stroke.btn-stroke_red Удалить курс
+        #delete-form.course__delete-form
+          | После удаления данные невозможно восстановить. Продолжить удаление?
+          button#delete-confirm.btn.btn-fill.btn-fill_red Удалить
+      section
+        #msg-box

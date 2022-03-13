@@ -1,0 +1,11 @@
+extends layout.pug
+
+block content
+  main
+    .courses.container
+      each course in courses
+        a.courses__item(href="/courses/" + course._id)
+          span.courses__badge Автор:&nbsp;#{course.author.firstName + ' ' + course.author.lastName}
+          .courses__container
+            h3.courses__title= course.title
+            p.courses__desc= course.description

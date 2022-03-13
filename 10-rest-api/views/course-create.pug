@@ -1,0 +1,14 @@
+extends layout.pug
+
+block content
+  main
+    .container
+      section
+        form#create-course-form(action=apiPath + "/courses", method="post")
+          label(for="title") Название
+          input(type="text", name="title")
+          label(for="description") Описание
+          textarea(type="text", name="description")
+          #lessons-list
+          button#add-lesson + Добавить урок
+          button(type="submit") Создать
