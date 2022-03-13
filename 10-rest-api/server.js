@@ -30,5 +30,4 @@ app.use(usersRouter);
 
 app.listen(3000, () => {
   console.log('Server successfully started')
-})
-;
+});
