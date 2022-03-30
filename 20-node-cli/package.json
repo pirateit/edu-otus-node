@@ -1,0 +1,20 @@
+{
+  "name": "20-node-cli",
+  "version": "1.0.0",
+  "description": "",
+  "bin": {
+    "net-cli": "main.js"
+  },
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cmd-shim": "^4.1.0",
+    "vorpal": "^1.12.0"
+  }
+}
