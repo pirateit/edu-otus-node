@@ -1,0 +1,22 @@
+type User {
+  id: Int!
+  email: String!
+  password: String!
+  isActive: Boolean!
+  created_at: String!
+  posts: [Post]
+}
+
+input UserData {
+  email: String
+  password: String
+}
+
+type Query {
+  getUser(userId: Int!): User
+}
+
+type Mutation {
+  updateUser(userId: Int!, userData: UserData): User
+  blockUser(userId: Int!): Boolean
+}
