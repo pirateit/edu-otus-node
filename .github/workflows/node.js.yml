@@ -9,14 +9,14 @@ on:
   pull_request:
     branches: [ master ]
   
-defaults:
-      run:
-        working-directory: ./31-deploy-cd
-
 jobs:
   build:
 
     runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: 31-deploy-cd
 
     strategy:
       matrix:
