@@ -45,3 +45,5 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "otus-pirateit-deploy"
           heroku_email: "info@pirateit.org"
+          appdir: 31-deploy-cd
+          usedocker: true
