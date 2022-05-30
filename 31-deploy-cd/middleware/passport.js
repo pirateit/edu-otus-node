@@ -4,6 +4,8 @@ export default checkAuthenticated;
 
 async function checkAuthenticated(req, res, next) {
   passport.authenticate('jwt', function (err, user, info) {
+    console.log(req.isAuthenticated());
+
     if (user && !req.user) {
       req.user = { ...user };
     }
