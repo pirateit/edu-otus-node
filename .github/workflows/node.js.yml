@@ -24,21 +24,6 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: 31-deploy-cd/package-lock.json
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
-    
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
@@ -48,3 +33,4 @@ jobs:
           usedocker: true
           appdir: 31-deploy-cd
           stack: "container"
+
