@@ -342,7 +342,7 @@ var upload = multer({
 });
 
 // Pages
-router.get('/', getPostsPage);
+router.get('/', checkAuthenticated, getPostsPage);
 router.get('/posts/:id', checkAuthenticated, getPostPage);
 router.get('/posts/:id/edit', checkAuthenticated, getUpdatePostPage);
 router.get('/new-post', checkAuthenticated, getCreatePostPage);
