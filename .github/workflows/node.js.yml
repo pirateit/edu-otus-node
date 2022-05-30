@@ -46,4 +46,3 @@ jobs:
           heroku_app_name: "otus-pirateit-deploy"
           heroku_email: "info@pirateit.org"
           appdir: 31-deploy-cd
-          usedocker: true
