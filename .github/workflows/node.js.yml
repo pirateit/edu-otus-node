@@ -24,13 +24,26 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "otus-pirateit-deploy"
-          heroku_email: "info@pirateit.org"
-          usedocker: true
-          appdir: 31-deploy-cd
-          stack: "container"
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: 31-deploy-cd/package-lock.json
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+    
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
 
+      - name: Add remote origin
+        run: git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/otus-pirateit-deploy.git
+
+      - name: Deploy backend to heroku
+        run: git push --force heroku `git subtree split --prefix server HEAD`:master
