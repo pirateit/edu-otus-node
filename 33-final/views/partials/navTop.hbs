@@ -1,0 +1,83 @@
+			<header class="page_header header_darkgrey header_logo_center toggler_right menu_justify">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-12 text-left text-md-center">
+							<div class="logo_wrapper">
+
+								<a href="/" class="logo">
+									<img src="/img/logo.png" alt="">
+								</a>
+
+							</div>
+							<!-- header toggler -->
+							<span class="toggle_menu">
+								<span></span>
+							</span>
+							<!-- main nav start -->
+							<nav class="mainmenu_wrapper">
+								<ul class="mainmenu nav sf-menu">
+									<li>
+										<a href="/">Главная</a>
+									</li>
+
+									<li>
+										<a href="javascript:void(0);">Сервисы</a>
+										<ul>
+											<li>
+												<a href="/ads">Объявления</a>
+												<ul>
+													<li>
+														<a href="/ads/autos">Авто</a>
+													</li>
+													<li>
+														<a href="/ads/parts">Запчасти</a>
+													</li>
+												</ul>
+											</li>
+
+                      <li>
+												<a href="/blogs">Блоги</a>
+											</li>
+
+											{{!-- <li>
+												<a href="#">Партнёры</a>
+											</li> --}}
+										</ul>
+									</li>
+
+									<li >
+										<a href="/events">События</a>
+									</li>
+
+                  <li>
+										<a href="/gallery">Фото</a>
+									</li>
+
+									<li>
+										<a href="/members">Участники</a>
+									</li>
+
+                  {{#if user}}
+                  <li>
+										<a href="/my">Мой гараж</a>
+										<ul>
+											<li>
+												<a href="/my/auto">Мои авто</a>
+											</li>
+
+											<li>
+												<a href="/my/cabinet">Кабинет</a>
+											</li>
+										</ul>
+									</li>
+                  {{else}}
+                  <li>
+										<a href="/enter">Мой гараж</a>
+									</li>
+                  {{/if}}
+								</ul>
+							</nav>
+						</div>
+					</div>
+				</div>
+			</header>

@@ -1,0 +1,70 @@
+{{> header }}
+{{> navTop }}
+
+			<section class="page_breadcrumbs cs background_cover section_padding_top_40 section_padding_bottom_40">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-12 text-center">
+							<h2>{{ title }}</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="./">
+										Главная
+									</a>
+								</li>
+								<li class="active">Фото</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="ds page_portfolio section_padding_top_100 section_padding_bottom_100">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-12">
+
+
+							<div class="filters isotope_filters text-center">
+								<a href="/gallery" class="selected">Все</a>
+								<a href="/gallery/club">Клубные</a>
+								<a href="/gallery/coffee">Кофе-тайм</a>
+								<a href="/gallery/competition">Соревнования</a>
+								<a href="/gallery/exhibition">Выставки</a>
+							</div>
+
+							<div class="isotope_container isotope row masonry-layout columns_margin_top_0 columns_margin_bottom_30" data-filters=".isotope_filters">
+                {{#each albums}}
+								<div class="isotope-item col-lg-6 col-md-6 col-sm-12">
+									<div class="vertical-item content-padding gallery-extended-item with_border text-center">
+										<div class="item-media">
+											<img src="/uploads/gallery/covers/{{this.cover}}" alt="">
+											<div class="media-links">
+												<a class="abs-link" title="" href="/gallery/{{this.id}}"></a>
+											</div>
+										</div>
+										<div class="item-content top-zebra-border">
+											<h3 class="item-title">
+												<a href="/gallery/{{this.id}}">{{this.title}}</a>
+											</h3>
+											<p>{{this.description}}</p>
+										</div>
+									</div>
+								</div>
+                {{/each}}
+
+							</div>
+							<!-- eof .isotope_container.row -->
+
+							<div class="row topmargin_20">
+								<div class="col-sm-12 text-center">
+									<img src="img/loading.png" alt="" class="fa-spin" />
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</section>
+
+{{> footer }}

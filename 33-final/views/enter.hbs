@@ -1,0 +1,150 @@
+{{> header }}
+{{> navTop }}
+
+<section class="page_breadcrumbs cs background_cover section_padding_top_40 section_padding_bottom_40">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <h2>Вход и Регистрация</h2>
+        <ol class="breadcrumb">
+          <li>
+            <a href="./">
+              Главная
+            </a>
+          </li>
+          <li class="active">Вход и Регистрация</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ls section_padding_top_100 section_padding_bottom_100">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="active">
+            <a href="#login-tab" role="tab" data-toggle="tab" aria-expanded="true">Вход</a>
+          </li>
+          <li class="">
+            <a href="#register-tab" role="tab" data-toggle="tab" aria-expanded="false">Регистрация</a>
+          </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div class="tab-pane fade active in" id="login-tab">
+            <div class="row">
+              <form class="register" action="#" id="form-login" role="form">
+                <div class="col-sm-6">
+                  <div class="form-group" id="login_field">
+                    <label for="login" class="control-label">
+                      <span class="grey">Email или Номер телефона:</span>
+                    </label>
+                    <input type="text" class="form-control " name="login" id="login" placeholder="" value=""
+                      autocomplete="off">
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="form-group" id="password_field">
+                    <label for="password" class="control-label">
+                      <span class="grey">Пароль:</span>
+                    </label>
+                    <input type="password" class="form-control " name="password" id="password" placeholder="" value=""
+                      autocomplete="off">
+                  </div>
+                </div>
+
+                <div class="col-sm-12" id="message-box"></div>
+
+                <div class="col-sm-10">
+                  <button type="submit" class="theme_button wide_button color1 topmargin_40">Войти</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="register-tab">
+            <div class="row">
+              <form class="register" action="#" id="form-register" role="form">
+                <div class="col-sm-6">
+                  <div class="form-group" id="first_name_field">
+                    <label for="first_name" class="control-label">
+                      <span class="grey">Имя:</span>
+                    </label>
+                    <input type="text" class="form-control " name="first_name" id="first_name" placeholder="" value=""
+                      autocomplete="off">
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="city" class="control-label">
+                      <span class="grey">Регион:</span>
+                    </label>
+                    <select class="form-control" name="city" id="city">
+                      <option value="" selected disabled>Выберите регион…</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="form-group validate-email" id="email_field">
+                    <label for="email" class="control-label">
+                      <span class="grey">Email адрес:</span>
+                    </label>
+                    <input type="text" class="form-control " name="email" id="email" placeholder="" value="">
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="form-group validate-phone" id="phone_field">
+                    <label for="phone" class="control-label">
+                      <span class="grey">Номер телефона:</span>
+                    </label>
+                    <input type="text" class="form-control " name="phone" id="phone" placeholder="8 (___) ___-__-__"
+                      value="">
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="form-group" id="password_field">
+                    <label for="password" class="control-label">
+                      <span class="grey">Пароль:</span>
+                      <span class="required">*</span>
+                    </label>
+                    <input type="password" class="form-control " name="password" id="password" placeholder="" value=""
+                      autocomplete="off">
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="form-group" id="password2_field">
+                    <label for="password2" class="control-label">
+                      <span class="grey">Подтвердите пароль:</span>
+                      <span class="required">*</span>
+                    </label>
+                    <input type="password" class="form-control " name="password2" id="password2" placeholder="" value=""
+                      autocomplete="off">
+                  </div>
+                </div>
+
+                <div class="col-sm-12" id="message-box"></div>
+
+                <div class="col-sm-10">
+                  <button type="submit" class="theme_button wide_button color1 topmargin_40">Зарегистрироваться</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+</section>
+
+{{> footer }}

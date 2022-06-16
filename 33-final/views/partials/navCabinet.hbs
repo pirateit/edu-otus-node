@@ -1,0 +1,154 @@
+			<header class="page_header_side page_header_side_sticked active-slide-side-header ds">
+				<span class="toggle_menu_side toggler_light header-slide">
+					<span></span>
+				</span>
+				<div class="scrollbar-macosx">
+					<div class="side_header_inner">
+						<div class="greylinks">
+							<!-- user -->
+
+							<div class="user-menu">
+								<div class="user-menu-media">
+									<img src="/uploads/user/01.jpg" alt="">
+								</div>
+								<div class="user-menu-info">
+									<h4>{{#if user.first_name}}{{user.first_name}}{{/if}} {{#if user.last_name}}{{user.last_name}}{{/if}}</h4>
+									<ul class="nav menu-side-click">
+										<li class="active">
+											<a href="#">
+												{{ user.role.title }}
+											</a>
+											<ul>
+												<li>
+													<a href="/my/profile">
+														<i class="fa fa-user"></i>
+														Профиль
+													</a>
+												</li>
+
+												<li>
+													<a href="/logout">
+														<i class="fa fa-sign-out"></i>
+														Выйти
+													</a>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+							</div>
+
+							<!-- main side nav start -->
+							<nav class="mainmenu_side_wrapper">
+								<h3 class="main_bg_color2">Навигация</h3>
+								<ul class="nav menu-side-click">
+									<li class="active">
+										<a href="/my/cabinet">
+											<i class="fa fa-th-large"></i>
+											Кабинет
+										</a>
+									</li>
+
+                  <li>
+										<a href="/my">
+											<i class="fa fa-th-large"></i>
+											Сайт
+										</a>
+									</li>
+								</ul>
+
+								<h3 class="dark_bg_color">Объявления</h3>
+								<ul class="nav menu-side-click">
+									<li>
+										<a href="/my/cabinet/ads">
+											<i class="fa fa-user"></i>
+											Мои объявления
+										</a>
+										<ul>
+											<li>
+												<a href="/my/cabinet/ads?cat=autos">
+													Автомобили
+												</a>
+											</li>
+											<li>
+												<a href="/my/cabinet/ads?cat=parts">
+													Запчасти
+												</a>
+											</li>
+                      <li>
+												<a href="/my/cabinet/ads/add">
+													Создать новое
+												</a>
+											</li>
+										</ul>
+									</li>
+									<li>
+										<a href="admin_posts.html">
+											<i class="fa fa-file-text"></i>
+											Избранное
+										</a>
+									</li>
+									<li>
+										<a href="/my/cabinet/ads/contact">
+											<i class="fa fa-suitcase"></i>
+											Мои данные
+										</a>
+									</li>
+								</ul>
+
+								<h3 class="dark_bg_color">Галерея</h3>
+								<ul class="nav menu-side-click">
+									<li>
+										<a href="/my/cabinet/gallery">
+											<i class="fa fa-table"></i>
+											Альбомы
+										</a>
+                    <ul>
+											<li>
+												<a href="/my/cabinet/gallery/add">
+													Создать
+												</a>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</nav>
+							<!-- eof main side nav -->
+						</div>
+					</div>
+				</div>
+			</header>
+
+			<header class="page_header header_white">
+				<div class="pull-right big-header-buttons">
+					<ul class="inline-dropdown inline-block">
+						<li class="dropdown user-dropdown-menu">
+							<a class="header-button" id="user-dropdown-menu" data-target="#" href="./" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+								<i class="fa fa-user grey"></i>
+								<span class="header-button-text">{{ user.role.title }}</span>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="user-dropdown-menu">
+								<ul class="nav greylinks">
+									<li>
+										<a href="/my/profile">
+											<i class="fa fa-user"></i>
+											Профиль
+										</a>
+									</li>
+
+									<li>
+										<a href="admin_signin.html">
+											<i class="fa fa-sign-out"></i>
+											Выйти
+										</a>
+									</li>
+								</ul>
+
+							</div>
+
+						</li>
+					</ul>
+				</div>
+				<!-- eof .header_right_buttons -->
+
+			</header>
