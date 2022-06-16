@@ -1,0 +1,223 @@
+{{> header }}
+{{> navTop }}
+
+<section class="page_breadcrumbs cs background_cover section_padding_top_40 section_padding_bottom_40">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <h2>Автомобили</h2>
+        <ol class="breadcrumb">
+          <li>
+            <a href="/">
+              Главная
+            </a>
+          </li>
+          <li>
+            <a href="/ads">
+              Объявления
+            </a>
+          </li>
+          <li class="active">Автомобили</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ds section_padding_top_130 section_padding_bottom_130">
+  <div class="container">
+    <div class="panel-group" id="accordion1">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion1" href="#collapse1" aria-expanded="false"
+              class="collapsed">
+              Поиск
+            </a>
+          </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+          <div class="shop-sorting with_padding_small with_background clearfix">
+            <div class="col-md-12">
+              <form class="contact-form" method="get" action="/ads/autos" id="filter-ads-autos">
+                <div class="row columns_margin_bottom_15">
+                  <div class="col-sm-4">
+                    <div class="form-group select-group">
+                      <label for="brand" class="sr-only">Марка</label>
+                      <div class="input-group">
+                        <select id="brand" name="brand" class="choice empty form-control">
+                          <option value="" selected="" data-default="">Марка...</option>
+                          {{#each brands}}
+                          <option value={{ this.brand }}>{{ this.brand }}</option>
+                          {{/each}}
+                        </select>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group select-group">
+                      <label for="model" class="sr-only">Модель</label>
+                      <div class="input-group">
+                        <select id="model" name="model" class="choice empty form-control">
+                          <option value="" selected="" data-default="">Модель...</option>
+                        </select>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group select-group">
+                      <label for="" class="sr-only">Поколение</label>
+                      <div class="input-group">
+                        <select id="" name="" class="choice empty form-control">
+                          <option value="" selected="" data-default="">Поколение...</option>
+                        </select>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label for="priceFrom" class="sr-only">Цена от
+                      </label>
+                      <input type="text" size="30" value="" name="priceFrom" id="priceFrom"
+                        class="form-control" placeholder="Цена от">
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label for="priceTo" class="sr-only">Цена до
+                      </label>
+                      <input type="text" size="30" value="" name="priceTo" id="priceTo"
+                        class="form-control" placeholder="до">
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label for="yearFrom" class="sr-only">Год от
+                      </label>
+                      <input type="text" size="30" value="" name="yearFrom" id="yearFrom"
+                        class="form-control" placeholder="Год от">
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label for="yearTo" class="sr-only">Год до
+                      </label>
+                      <input type="text" size="30" value="" name="yearTo" id="yearTo"
+                        class="form-control" placeholder="до">
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group select-group">
+                      <label for="state" class="sr-only">Состояние</label>
+                      <div class="input-group">
+                        <select id="state" name="state" class="choice empty form-control">
+                          <option selected disabled>Состояние...</option>
+                          <option value="">Любое</option>
+                          <option value="1">Не требует ремонта</option>
+                          <option value="2">Требуется ремонт</option>
+                        </select>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group select-group">
+                      <label for="transmission" class="sr-only">КПП</label>
+                      <div class="input-group">
+                        <select id="transmission" name="transmission" class="choice empty form-control">
+                          <option selected disabled>КПП...</option>
+                          <option value="1">АКПП</option>
+                          <option value="2">Вариатор</option>
+                          <option value="3">Робот</option>
+                          <option value="4">Механика</option>
+                        </select>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group select-group">
+                      <label for="engineType" class="sr-only">Топливо</label>
+                      <div class="input-group">
+                        <select id="engineType" name="engineType" class="choice empty form-control">
+                          <option selected disabled>Топливо...</option>
+                          <option value="1">Бензин</option>
+                          <option value="2">Дизель</option>
+                          <option value="3">Гибрид</option>
+                          <option value="4">Электро</option>
+                        </select>
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p class="form-submit">
+                  <button type="submit" class="theme_button color1">Применить</button>
+                </p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="columns-2">
+
+        <ul id="products" class="products list-unstyled list-view">
+          {{#each ads}}
+          <li class="product type-product">
+            <div class="side-item no-content-padding">
+              <div class="row">
+
+                <div class="col-md-6">
+
+                  <div class="item-media">
+                    <a href="/ads/{{this.id}}-{{this.car_id}}">
+                      <img src="{{#if this.photo}}/uploads/ads/{{this.id}}-{{this.car_id}}/{{this.photo}}{{else}}/img/ads/photo-default.jpg{{/if}}" alt="">
+                    </a>
+                    <div class="product-buttons">
+                      <a href="#" rel="nofollow" class="favorite_button">
+                        В избранное
+                      </a>
+                    </div>
+                  </div>
+                  <h3>
+                    <a href="/ads/{{this.id}}-{{this.car_id}}">{{this.car.brand}}</a>
+                  </h3>
+
+                </div>
+
+                <div class="col-md-6">
+                  <div class="item-content">
+                    <h3>
+                      <a href="/ads/{{this.id}}-{{this.car_id}}">{{this.car.brand}} {{this.car.model}}, {{this.year}}</a>
+                    </h3>
+
+                    <p class="product-description">
+                      {{#if this.engine_capacity}}{{this.engine_capacity}}, {{/if}}{{lookup ../engineTypes this.engine_type}}, {{lookup ../transmissions this.transmission}}, {{lookup ../drives this.drive}}{{#if this.mileage}}, {{this.mileage}}{{/if}}
+                    </p>
+
+                    <span class="price">
+                      <span>
+                        <span class="amount">{{this.price}} &#8381;</span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          {{/each}}
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{{> footer }}

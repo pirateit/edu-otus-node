@@ -1,0 +1,144 @@
+{{> header }}
+{{> navTop }}
+
+<section class="page_breadcrumbs cs background_cover section_padding_top_40 section_padding_bottom_40">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <h2>Автомобили</h2>
+        <ol class="breadcrumb">
+          <li>
+            <a href="/">
+              Главная
+            </a>
+          </li>
+          <li>
+            <a href="/ads">
+              Объявления
+            </a>
+          </li>
+          <li class="active">Автомобили</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section_padding_top_100 section_padding_bottom_75 ds">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="with_border with_padding">
+          <div itemscope="" itemtype="http://schema.org/Product" class="product type-product row">
+            <div class="col-sm-6">
+              {{#if (eq photos.length 0)}}
+              <div class="images">
+                <img src="/img/ads/photo-default.jpg" class="attachment-shop_single wp-post-image" alt="" title="">
+              </div>
+              {{else}}
+              <div class="images">
+                <a href="/uploads/ads/{{ad.id}}-{{ad.car.id}}/{{ad.photo}}" itemprop="image"
+                  class="woocommerce-main-image zoom" data-rel="prettyPhoto[product-gallery]">
+                  <img src="/uploads/ads/{{ad.id}}-{{ad.car.id}}/{{ad.photo}}" class="attachment-shop_single wp-post-image" alt="" title="">
+                </a>
+              </div>
+              <div class="thumbnails-wrap">
+                <div id="product-thumbnails" class="owl-carousel thumbnails product-thumbnails" data-loop="true"
+                  data-center="true" data-margin="10" data-nav="false" data-dots="true" data-items="3"
+                  data-responsive-lg="3" data-responsive-md="3" data-responsive-sm="2" data-responsive-xs="2">
+                  {{#each photos}}
+                  <a href="/uploads/ads/{{../ad.id}}-{{../ad.car.id}}/{{this}}" class="zoom first" title=""
+                    data-gal="prettyPhoto[product-gallery]">
+                    <img src="/uploads/ads/{{../ad.id}}-{{../ad.car.id}}/{{this}}" class="attachment-shop_thumbnail" alt="">
+                  </a>
+                  {{/each}}
+                </div>
+              </div>
+              {{/if}}
+            </div>
+
+            <div class="summary entry-summary col-sm-6">
+              <h1 itemprop="name" class="product_title entry-title">{{ad.car.brand}} {{ad.car.model}}, {{ad.year}}</h1>
+
+              <div class="product-rating" itemprop="aggregateRating" itemscope=""
+                itemtype="http://schema.org/AggregateRating">
+                <div class="review-links darklinks">
+                  <a href="javascript:void(0);" class="review-link" rel="nofollow">
+                    Рейтинг продавца - <span itemprop="reviewCount" class="count">{{ad.user.rating}}</span>
+                  </a>
+                </div>
+              </div>
+
+              <div itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
+                <ul class="list1 no-bullets">
+                  <li>
+                    <p class="price">
+                      <ins>
+                        <span class="amount">{{ad.price}} &#8381;</span>
+                      </ins>
+                    </p>
+
+                    <meta itemprop="price" content="2">
+
+                    <meta itemprop="priceCurrency" content="USD">
+
+                    <link itemprop="availability" href="http://schema.org/InStock">
+
+                    <p class="stock">
+                      <span class="grey">Продажа от собственника:</span> {{#if ad.is_owner}}Да{{else}}Нет{{/if}}
+                    </p>
+                    <p class="stock">
+                      <span class="grey">Состояние:</span> {{#if ad.state}}{{lookup ./states ad.state}}{{else}}-{{/if}}
+                    </p>
+                    <p class="stock">
+                      <span class="grey">Цвет:</span> {{#if ad.color}}{{lookup ./colors ad.color}}{{else}}-{{/if}}
+                    </p>
+                    <p class="stock">
+                      <span class="grey">Год выпуска:</span> {{#if ad.year}}{{ad.year}}{{else}}-{{/if}}
+                    </p>
+                    <p class="stock">
+                      <span class="grey">Привод:</span> {{#if ad.drive}}{{lookup ./drives ad.drive}}{{else}}-{{/if}}
+                    </p>
+                    <p class="stock">
+                      <span class="grey">Тип кузова:</span> {{#if ad.body_type}}{{lookup ./bodyTypes
+                      body_type}}{{else}}-{{/if}}
+                    </p>
+                    <p class="stock"><span class="grey">Тип двигателя:</span> {{#if ad.engine_type}}{{lookup
+                      ./engineTypes
+                      ad.engine_type}}{{else}}-{{/if}}
+                    </p>
+                    <p class="stock"><span class="grey">Объём двигателя:</span> {{#if
+                      ad.engine_capacity}}{{ad.engine_capacity}}{{else}}-{{/if}}
+                    </p>
+                    <p class="stock"><span class="grey">КПП:</span> {{#if ad.transmission}}{{lookup ./transmissions
+                      ad.transmission}}{{else}}-{{/if}}
+                    </p>
+                    <p class="stock"><span class="grey">Пробег:</span> {{#if ad.mileage}}{{ad.mileage}}{{else}}-{{/if}}
+                    </p>
+                    <!-- <p class="stock out-of-stock"><span class="grey">Availability:</span> <span class="highlight">Out Of Stock</span></p> -->
+                  </li>
+                </ul>
+
+                <p class="stock">
+                  <span class="grey">Описание:</span> {{#if ad.description}}{{ad.description}}{{else}}-{{/if}}
+                </p>
+
+                <div class="product_meta">
+                  <span class="posted_in">
+                    <span class="grey">Контакты: {{ad.contact.name}}</span>
+                    <span class="categories-links small-text">
+                      <a rel="category" href="tel://+{{ad.contact.phone}}"> +{{ad.contact.phone}}</a>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{> footer }}

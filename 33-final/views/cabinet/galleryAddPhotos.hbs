@@ -1,0 +1,81 @@
+{{> header }}
+{{> navCabinet }}
+
+			<section class="ls ms section_padding_top_50 section_padding_bottom_50 columns_padding_5">
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-sm-12">
+							<h3>{{ title }}</h3>
+						</div>
+					</div>
+					<!-- .row -->
+
+					<form class="form-horizontal" action="#" id="form-gallery-photos-add" >
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="with_background with_padding">
+
+									<h4>
+										Выберите фото для загрузки
+										<span class="pull-right">
+											<button type="submit" class="theme_button small_button">Загрузить</button>
+										</span>
+									</h4>
+
+									<hr>
+									<div class="row form-group">
+										<div class="col-lg-9">
+											<input type="file" class="form-control" id="photos" name="photos" multiple>
+										</div>
+									</div>
+
+                  <div class="col-sm-12" id="message-box"></div>
+
+									<div class="row">
+										<div class="col-sm-12 text-right">
+                      <input type="hidden" name="id" id="id" value={{id}}>
+											<button type="submit" class="theme_button wide_button">Загрузить</button>
+											<a href="/my/cabinet/gallery" class="theme_button inverse wide_button">Отменить</a>
+										</div>
+									</div>
+									<!-- .row  -->
+
+								</div>
+								<!-- .with_background -->
+
+							</div>
+							<!-- .col-* -->
+						</div>
+						<!-- .row  -->
+					</form>
+				</div>
+			</section>
+
+			<section class="ls">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-12">
+							&copy; Copyrights 2017
+						</div>
+					</div>
+				</div>
+			</section>
+
+		</div>
+		<!-- eof #box_wrapper -->
+	</div>
+	<!-- eof #canvas -->
+  <script src="/js/vendor/inputmask.min.js"></script>
+  <script src="/js/vendor/just-validate.production.min.js"></script>
+  <script src="/js/vendor/axios.min.js"></script>
+	<script src="/js/compressed.js"></script>
+	<script src="/js/vendor/Chart.bundle.min.js"></script>
+	<script src="/js/main.js"></script>
+  <script src="/js/autoclub.js"></script>
+	<script src="/js/admin-charts.js"></script>
+
+</body>
+
+</html>

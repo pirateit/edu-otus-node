@@ -1,0 +1,91 @@
+{{> header }}
+{{> navCabinet }}
+
+<section class="ls ms section_padding_top_50 section_padding_bottom_50 columns_padding_5">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <h3>{{ title }}</h3>
+      </div>
+    </div>
+
+    <form class="form-horizontal" action="#" id="form-ads-contact-edit">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="with_background with_padding">
+
+            <h4>
+              Введите данные
+              <span class="pull-right">
+                <button type="submit" class="theme_button small_button">Сохранить</button>
+              </span>
+            </h4>
+
+            <hr>
+            <div class="row form-group">
+              <label class="col-lg-3 control-label">Имя: </label>
+              <span class="required">*</span>
+              <div class="col-lg-9">
+                <input type="text" class="form-control" id="name" name="name" value={{contact.name}}>
+              </div>
+            </div>
+
+            <div class="row form-group">
+              <label class="col-lg-3 control-label">Номер телефона: </label>
+              <span class="required">*</span>
+              <div class="col-lg-9">
+                <input type="text" class="form-control " name="phone" id="phone" placeholder="8 (___) ___-__-__"
+                      value={{contact.phone}}>
+              </div>
+            </div>
+
+            <div class="row form-group">
+              <label class="col-lg-3 control-label">Email: </label>
+              <div class="col-lg-9">
+                <input type="text" class="form-control " name="email" id="email" placeholder="" value={{contact.email}}>
+              </div>
+            </div>
+
+            <div class="col-sm-12" id="message-box"></div>
+
+            <div class="row">
+              <div class="col-sm-12 text-right">
+                <input type="hidden" id="id" value={{user.id}}>
+                <button type="submit" class="theme_button wide_button">Сохранить</button>
+                <a href="/my/cabinet/gallery" class="theme_button inverse wide_button">Отменить</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="ls">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        &copy; Copyrights 2017
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+<!-- eof #box_wrapper -->
+</div>
+<!-- eof #canvas -->
+<script src="/js/vendor/inputmask.min.js"></script>
+<script src="/js/vendor/just-validate.production.min.js"></script>
+<script src="/js/vendor/axios.min.js"></script>
+<script src="/js/compressed.js"></script>
+<script src="/js/vendor/Chart.bundle.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/autoclub.js"></script>
+<script src="/js/admin-charts.js"></script>
+
+</body>
+
+</html>

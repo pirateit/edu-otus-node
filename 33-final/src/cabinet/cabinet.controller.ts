@@ -1,0 +1,237 @@
+import { Controller, Get, Param, Query, Req, Res, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Response, Request } from 'express';
+import { UserInterceptor } from '../user/user.interceptor';
+import { CheckAuthGuard } from '../auth/check-auth.guard';
+import { GalleryService } from '../gallery/gallery.service';
+import { Category } from '../gallery/category.enum';
+import * as fs from 'fs';
+import * as path from 'path';
+import { UserService } from '../user/user.service';
+import { User } from '../user/user.model';
+import { AdsService } from '../ads/ads.service';
+import { CarService } from '../car/car.service';
+import { LocationService } from '../location/location.service';
+import { Colors } from '../ads/color.enum';
+
+@Controller('my')
+@UseInterceptors(UserInterceptor)
+@UseGuards(CheckAuthGuard)
+export class CabinetController {
+  constructor(
+    private galleryService: GalleryService,
+    private userService: UserService,
+    private adsService: AdsService,
+    private carService: CarService,
+    private locationService: LocationService,
+  ) { }
+
+  @Get('cabinet')
+  getCabinetPage(@Req() req: Request, @Res() res: Response) {
+    if (!req.user) {
+      return res.redirect('/enter');
+    }
+
+    return res.render(
+      'cabinet/index',
+      { user: req.user, title: 'Мой кабинет' },
+    );
+  }
+
+  @Get('cabinet/ads')
+  async getCabinetAdsPage(@Query() query, @Req() req: Request, @Res() res: Response) {
+    if (!req.user) {
+      return res.redirect('/enter');
+    }
+
+    const { id } = req.user as User;
+
+    switch (query.cat) {
+      case 'autos':
+
+      default:
+        const ads = {
+          autos: [],
+          parts: [],
+          count: 0,
+        };
+        const adsAutosData = await this.adsService.getUserAdsAutos(id, query.page, query.limit);
+        ads.count += adsAutosData.count;
+
+        adsAutosData.rows.forEach(ad => ads.autos.push(ad));
+
+        return res.render(
+          'cabinet/ads',
+          { user: req.user, title: 'Мои объявления', ads },
+        );
+    }
+  }
+
+  @Get('cabinet/ads/add')
+  async getCabinetAdsAddPage(@Req() req: Request, @Res() res: Response) {
+    if (!req.user) {
+      return res.redirect('/enter');
+    }
+
+    const categories = await this.adsService.getCategories();
+
+    return res.render(
+      'cabinet/adsAdd',
+      { user: req.user, title: 'Новое объявление - Выбор категории', categories: categories },
+    );
+  }
+
+  @Get('cabinet/ads/add/:name')
+  async getCabinetAdsAddItemPage(@Param() params, @Req() req: Request, @Res() res: Response) {
+    if (!req.user) {
+      return res.redirect('/enter');
+    }
+
+    const locationsData = await this.locationService.getRegions();
+    const { id } = req.user as User;
+    const contactsData = await this.userService.getContacts(id);
+
+    if (params.name === 'autos') {
+      var brandsData = await this.carService.getBrands();
+    } else {
+
+    }
+
+    return res.render(
+      `cabinet/ads/${params.name}`,
+      { user: req.user, title: 'Новое объявление', locations: locationsData, brands: brandsData, contacts: contactsData },
+    );
+  }
+
+  @Get('cabinet/ads/:id-:car/edit')
+  async getCabinetAdsEdit(@Param() params, @Req() req: Request, @Res() res: Response) {
+    if (!req.user) {
+      return res.redirect('/enter');
+    }
+
+    const locationsData = await this.locationService.getRegions();
+    const { id } = req.user as User;
+    const contactsData = await this.userService.getContacts(id);
+    const brandsData = await this.carService.getBrands();
+    const adData = await this.adsService.findAdsAuto(params.id);
+    const cities = await this.locationService.getCities(adData.location.region);
+    const photos = [];
+    const directoryPath = path.join(process.cwd(), 'uploads', 'ads', `${params.id}-${params.car}`);
+
+    fs.readdir(directoryPath, function (err, files) {
+      if (err) {
+        return console.log('Unable to scan directory: ' + err);
+      }
+
+      files.forEach(function (file) {
+        photos.push(file);
+      });
+    });
+
+    return res.render(
+      `cabinet/ads/autoEdit`,
+      { user: req.user, title: 'Редактирование объявления', ad: adData, photos,
+      locations: locationsData, brands: brandsData, contacts: contactsData, cities, 
+    colors: Colors },
+    );
+  }
+
+  @Get('cabinet/ads/contact')
+  async getCabinetContactEditPage(@Req() req: Request, @Res() res: Response) {
+    if (!req.user) {
+      return res.redirect('/enter');
+    }
+
+    const { id } = req.user as User;
+    const contactData = await this.userService.getContacts(id);
+
+    return res.render(
+      'cabinet/adsEditContact',
+      { user: req.user, title: 'Редактирование контактных данных', contact: contactData },
+    );
+  }
+
+  @Get('cabinet/gallery')
+  async getCabinetGalleryPage(@Req() req: Request, @Res() res: Response) {
+    let categories = [];
+
+    if (!req.user) {
+      return res.redirect('/enter');
+    }
+
+    for (let key in Category) {
+      let value = Category[key];
+      categories.push(value);
+    }
+
+    const albums = await this.galleryService.findAll();
+
+    return res.render(
+      'cabinet/gallery',
+      { user: req.user, title: 'Фотогалереи', categories, albums },
+    );
+  }
+
+  @Get('cabinet/gallery/add')
+  getCabinetGalleryAddPage(@Req() req: Request, @Res() res: Response) {
+    let categories = [];
+
+    if (!req.user) {
+      return res.redirect('/enter');
+    }
+
+    for (let key in Category) {
+      let value = Category[key];
+      categories.push(value);
+    }
+
+    return res.render(
+      'cabinet/galleryAddAlbum',
+      { user: req.user, title: 'Создание альбома', categories },
+    );
+  }
+
+  @Get('cabinet/gallery/:id/edit')
+  async getCabinetGalleryEditPage(@Param() params, @Req() req: Request, @Res() res: Response) {
+    let categories = [];
+    const albumData = await this.galleryService.findOne(params.id);
+
+    if (!req.user) {
+      return res.redirect('/enter');
+    }
+
+    for (let key in Category) {
+      let value = Category[key];
+      categories.push(value);
+    }
+
+    return res.render(
+      'cabinet/galleryEditAlbum',
+      { user: req.user, title: 'Изменение альбома', categories, album: albumData },
+    );
+  }
+
+  @Get('cabinet/gallery/:id/add')
+  async getCabinetPhotosAddPage(@Param() params, @Req() req: Request, @Res() res: Response) {
+    const photos = [];
+    const directoryPath = path.join(process.cwd(), 'uploads', 'gallery', params.id);
+
+    fs.readdir(directoryPath, function (err, files) {
+      if (err) {
+        return console.log('Unable to scan directory: ' + err);
+      }
+
+      files.forEach(function (file) {
+        photos.push(file);
+      });
+    });
+
+    if (!req.user) {
+      return res.redirect('/enter');
+    }
+
+    return res.render(
+      'cabinet/galleryAddPhotos',
+      { user: req.user, title: 'Загрузка фото', id: params.id, photos },
+    );
+  }
+}
