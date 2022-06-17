@@ -4,7 +4,7 @@ import { Location } from '../../location/location.model';
 import { Car } from '../../car/car.model';
 import { User } from '../../user/user.model';
 import { Category } from '../category.model';
-import { AdsCarPart } from './carPart';
+import { AdsCarPart } from './carPart.model';
 
 @Table({ tableName: 'ads_part' })
 export class AdsPart extends Model {

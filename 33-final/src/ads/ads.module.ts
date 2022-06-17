@@ -6,7 +6,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { AdsAuto } from './models/auto.model';
 import { LocationModule } from '../location/location.module';
 import { AdsPart } from './models/part.model';
-import { AdsCarPart } from './models/carPart';
+import { AdsCarPart } from './models/carPart.model';
 import { CarModule } from '../car/car.module';
 
 @Module({

@@ -12,5 +12,5 @@ export class AdsCarPart extends Model {
   @ForeignKey(() => AdsPart)
   @AllowNull(false)
   @Column
-  part_id: number
+  ad_id: number
 }

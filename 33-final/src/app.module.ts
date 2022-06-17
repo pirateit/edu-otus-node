@@ -18,7 +18,7 @@ import { CarModule } from './car/car.module';
 import { Car } from './car/car.model';
 import { AdsAuto } from './ads/models/auto.model';
 import { AdsPart } from './ads/models/part.model';
-import { AdsCarPart } from './ads/models/carPart';
+import { AdsCarPart } from './ads/models/carPart.model';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({

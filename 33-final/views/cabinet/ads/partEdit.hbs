@@ -1,0 +1,214 @@
+{{> header }}
+{{> navCabinet }}
+
+<section class="ls ms section_padding_top_50 section_padding_bottom_50 columns_padding_5">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>{{ title }}</h3>
+            </div>
+        </div>
+        <!-- .row -->
+
+        <form class="form-horizontal" action="#" id="form-ads-auto-edit">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="with_background with_padding">
+                        <h4> Описание
+                            {{#if ad.is_active}}
+                                <span class="pull-right">
+                <button type="button" class="btn btn-danger small_button" id="closeBtn">Снять с публикации</button>
+              </span>
+                            {{else}}
+                                <span class="pull-right">
+                <button type="button" class="btn btn-success small_button" id="openBtn">Опубликовать</button>
+              </span>
+                            {{/if}}
+                        </h4>
+
+                        <hr>
+
+                        <div class="row form-group">
+                            <label class="col-lg-2 control-label">Название:</label>
+                            <span class="required">*</span>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" name="title" id="title" value="{{ad.title}}">
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label class="col-lg-2 control-label">Код запчасти:</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" name="part_number" value="{{ad.part_number}}">
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label class="col-lg-2 control-label">Для авто:</label>
+                            <div class="col-lg-5">
+                                <select class="form-control" id="brand">
+                                    <option value="0" selected disabled>Марка...</option>
+                                    {{#each brands}}
+                                        <option value={{ this.brand }}>{{ this.brand }}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-lg-5">
+                                <select class="form-control" id="model">
+                                    <option value="0" selected disabled>Модель...</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-12" id="cars">
+                                {{#each ad.cars}}
+                                        <div class="col-lg-3 checkbox">
+                                            <input type="checkbox" id="carId-{{this.id}}" name="cars" value={{this.id}} checked>
+                                            <label for="carId-{{this.id}}">{{this.brand}} {{this.model}}</label>
+                                        </div>
+                                    {{/each}}
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label class="col-lg-2 control-label">Описание:</label>
+                            <div class="col-lg-10">
+                                <textarea rows="5" class="form-control" name="description">{{ad.description}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label class="col-lg-2 control-label">Цена:</label>
+                            <span class="required">*</span>
+                            <div class="col-lg-10">
+                                <input type="number" class="form-control" name="price" id="price" value={{ad.price}}>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label class="col-lg-2 control-label">Регион:</label>
+                            <span class="required">*</span>
+                            <div class="col-lg-10">
+                                <select class="form-control" name="region" id="region">
+                                    {{#each locations}}
+                                        <option value="{{this.region}}" {{#if (eq this.dataValues.citiesCount 1)}}
+                                                data-cities="true"
+                                        {{/if}}{{#if (eq this.region ../ad.location.region)}}
+                                                selected{{/if}}>{{this.region}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="city row form-group" {{#if ad.location.city}} style="display: block;" {{/if}}>
+                            <label class="col-lg-2 control-label">Город:</label>
+                            <span class="required">*</span>
+                            <div class="col-lg-10">
+                                <select class="form-control" name="city" id="city">
+                                    {{#each cities}}
+                                        <option value={{this.id}}{{#if (eq this.city ../ad.location.city)}}
+                                                selected{{/if}}>{{this.city}}
+                                        </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label class="col-lg-2 control-label">Контактные данные:</label>
+                            <span class="required">*</span>
+                            <div class="col-lg-10">
+                                <select class="form-control" name="contact_id" id="contact">
+                                    <option value={{contacts.id}}>{{contacts.name}} (+{{contacts.phone}})</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label class="col-lg-2 control-label">Фотографии:</label>
+
+                            {{#if (gt photos.length 0)}}
+                                <div class="row">
+                                    {{#each photos}}
+                                        <div class="col-md-4 col-sm-12 item-editable bottommargin_20"
+                                             data-photo-name={{this}}>
+                                            <div class="item-media">
+                                                <img src="/uploads/ads/{{../ad.id}}/{{this}}"
+                                                     alt="...">
+                                            </div>
+                                            <div class="item-edit-controls darklinks">
+                                                <a href="#">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </a>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="photo" value={{this}} {{#if
+                                                            (eq this ../ad.photo)}} checked{{/if}}>
+                                                    Обложка
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="deletePhotos" value={{this}}> Удалить
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            {{/if}}
+
+                            <div class="col-lg-10">
+                                <input type="file" name="photos" id="photos">
+                                <p class="help-block">Выберите до 10 фотографий</p>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12" id="message-box"></div>
+
+                        <div class="row">
+                            <div class="col-sm-12 text-right">
+                                <input type="hidden" id="id" value={{ad.id}}>
+                                <input type="hidden" id="car" value={{ad.car_id}}>
+                                <button type="submit" class="theme_button wide_button">Сохранить</button>
+                            </div>
+                        </div>
+                        <!-- .row  -->
+
+                    </div>
+                    <!-- .with_background -->
+
+                </div>
+                <!-- .col-* -->
+            </div>
+            <!-- .row  -->
+        </form>
+    </div>
+</section>
+
+<section class="ls">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                &copy; Copyrights 2017
+            </div>
+        </div>
+    </div>
+</section>
+
+</div>
+<!-- eof #box_wrapper -->
+</div>
+<!-- eof #canvas -->
+<script src="/js/vendor/inputmask.min.js"></script>
+<script src="/js/vendor/just-validate.production.min.js"></script>
+<script src="/js/vendor/axios.min.js"></script>
+<script src="/js/compressed.js"></script>
+<script src="/js/vendor/Chart.bundle.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/autoclub.js"></script>
+<script src="/js/admin-charts.js"></script>
+
+</body>
+
+</html>
