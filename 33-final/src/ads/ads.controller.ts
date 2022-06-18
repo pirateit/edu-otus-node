@@ -111,7 +111,7 @@ export class AdsController {
   @UseGuards(CheckAuthGuard)
   @Get('ads/:id-:car')
   async getAdsAuto(@Param() params, @Req() req, @Res() res) {
-    const adData = await this.adsService.findAdsAuto(Number(params.id));
+    const adData = await this.adsService.findOne(Number(params.id));
     const photos = [];
     const directoryPath = path.join(process.cwd(), 'uploads', 'ads', `${params.id}-${params.car}`);
 
@@ -186,21 +186,59 @@ export class AdsController {
       if (!req.body[key]) req.body[key] = null;
     }
 
-    body.car_id = body.model;
+    if (body.car_id) body.car_id = body.model;
+    if (body.type === 'parts') body.category
+    switch (body.type) {
+      case 'autos':
+        body.category_id = 1;
+        break;
+      case 'engine':
+        body.category_id = 3;
+        break;
+      case 'chassis':
+        body.category_id = 4;
+        break;
+      case 'body':
+        body.category_id = 5;
+        break;
+      case 'electric':
+        body.category_id = 6;
+        break;
+      default:
+        body.category_id = 2;
+    }
+
     body.user_id = req.user.id;
     req.files ? body.photo = req.files[0]?.filename : false;
 
     try {
       const result = await this.sequelize.transaction(async t => {
         const newAdData = await this.adsService[body.type](body, t);
+        if (body.cars && typeof body.cars === 'string') {
+          await this.adsService.createCarPart(body.car, newAdData.id);
+        } else if (body.cars) {
+          body.cars.forEach(async car => await this.adsService.createCarPart(body.car, newAdData.id));
+        }
 
-        if (req.files && newAdData) {
-          if (!fs.existsSync(join(process.cwd(), 'uploads', 'ads', `${newAdData.id}-${body.car_id}`))) {
-            fs.mkdirSync(join(process.cwd(), 'uploads', 'ads', `${newAdData.id}-${body.car_id}`));
+        if (req.files) {
+          if (body.type === 'autos') {
+            if (!fs.existsSync(join(process.cwd(), 'uploads', 'ads', `${newAdData.id}-${body.car_id}`))) {
+              fs.mkdirSync(join(process.cwd(), 'uploads', 'ads', `${newAdData.id}-${body.car_id}`));
+            }
+          } else {
+            if (!fs.existsSync(join(process.cwd(), 'uploads', 'ads', `${newAdData.id}`))) {
+              fs.mkdirSync(join(process.cwd(), 'uploads', 'ads', `${newAdData.id}`));
+            }
           }
 
           req.files.forEach(file => {
-            const newPath = join(process.cwd(), 'uploads', 'ads', `${newAdData.id}-${body.car_id}`, file.filename)
+            var newPath: string;
+
+            if (body.type === 'autos') {
+              newPath = join(process.cwd(), 'uploads', 'ads', `${newAdData.id}-${body.car_id}`, file.filename);
+            } else {
+              newPath = join(process.cwd(), 'uploads', 'ads', `${newAdData.id}`, file.filename);
+            }
 
             fs.rename(file.path, newPath, function (err) {
               if (err) throw err;
@@ -220,11 +258,13 @@ export class AdsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('api/ads/:id-:car')
+  @Put('api/ads/:id-?:car?')
   @UseInterceptors(FilesInterceptor('photos', 10, {
     storage: diskStorage({
       destination: (req, file, cb) => {
-        cb(null, `./uploads/ads/${req.params.id}-${req.params.car}`)
+        const adPath = req.params.car ? `${req.params.id}-${req.params.car}` : `${req.params.id}`;
+
+        cb(null, `./uploads/ads/${adPath}`)
       },
       filename: (req, file, callback) => {
         var uniqueSuffix = Date.now();
@@ -239,7 +279,7 @@ export class AdsController {
       callback(null, true);
     },
   }))
-  async editAdAuto(@Param() params, @Body() body, @Req() req) {
+  async editAd(@Param() params, @Body() body, @Req() req) {
     if (body.is_active === false) {
       return this.adsService.closeAd(params.id, params.car);
     } else if (body.is_active === true) {
@@ -264,7 +304,14 @@ export class AdsController {
 
     try {
       const result = await this.sequelize.transaction(async t => {
-        await this.adsService.updateAuto(params.id, body, t);
+        await this.adsService.updateOne(params.id, body, params.car, t);
+        await this.adsService.deletePartCars(params.id);
+
+        if (body.cars && typeof body.cars === 'string') {
+          await this.adsService.createCarPart(body.cars, params.id);
+        } else if (body.cars) {
+          body.cars.forEach(async car => await this.adsService.createCarPart(car, params.id));
+        }
 
         if (Number(params.car) !== Number(body.model)) {
           const newPath = join(process.cwd(), 'uploads', 'ads', `${params.id}-${body.model}`);
@@ -275,19 +322,37 @@ export class AdsController {
         }
 
         if (req.files) {
-          if (!fs.existsSync(join(process.cwd(), 'uploads', 'ads', `${params.id}-${params.car}`))) {
-            fs.mkdirSync(join(process.cwd(), 'uploads', 'ads', `${params.id}-${params.car}`));
+          if (params.car) {
+            if (!fs.existsSync(join(process.cwd(), 'uploads', 'ads', `${params.id}-${params.car}`))) {
+              fs.mkdirSync(join(process.cwd(), 'uploads', 'ads', `${params.id}-${params.car}`));
+            }
+          }
+        } else {
+          if (!fs.existsSync(join(process.cwd(), 'uploads', 'ads', `${params.id}`))) {
+            fs.mkdirSync(join(process.cwd(), 'uploads', 'ads', `${params.id}`));
           }
         }
 
         if (body.deletePhotos && typeof body.deletePhotos === 'string') {
+          if (params.car) {
           fs.unlink(join(process.cwd(), 'uploads', 'ads', `${params.id}-${params.car}`, body.deletePhotos), (err) => {
             if (err) throw err;
           });
+          } else {
+            fs.unlink(join(process.cwd(), 'uploads', 'ads', `${params.id}`, body.deletePhotos), (err) => {
+              if (err) throw err;
+            });
+          }
         } else if (body.deletePhotos) {
+          if (params.car) {
           body.deletePhotos.forEach(photo => fs.unlink(join(process.cwd(), 'uploads', 'ads', `${params.id}-${params.car}`, photo), (err) => {
             if (err) throw err;
           }));
+          } else {
+            body.deletePhotos.forEach(photo => fs.unlink(join(process.cwd(), 'uploads', 'ads', `${params.id}`, photo), (err) => {
+              if (err) throw err;
+            }));
+          }
         }
 
         return true;

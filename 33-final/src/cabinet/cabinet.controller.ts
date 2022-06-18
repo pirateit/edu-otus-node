@@ -55,9 +55,12 @@ export class CabinetController {
           count: 0,
         };
         const adsAutosData = await this.adsService.getUserAdsAutos(id, query.page, query.limit);
+        const adsPartsData = await this.adsService.getUserAdsParts(id, query.page, query.limit);
         ads.count += adsAutosData.count;
+        ads.count += adsPartsData.count;
 
         adsAutosData.rows.forEach(ad => ads.autos.push(ad));
+        adsPartsData.rows.forEach(ad => ads.parts.push(ad));
 
         return res.render(
           'cabinet/ads',
@@ -90,11 +93,7 @@ export class CabinetController {
     const { id } = req.user as User;
     const contactsData = await this.userService.getContacts(id);
 
-    if (params.name === 'autos') {
-      var brandsData = await this.carService.getBrands();
-    } else {
-
-    }
+    var brandsData = await this.carService.getBrands();
 
     return res.render(
       `cabinet/ads/${params.name}`,
@@ -102,7 +101,7 @@ export class CabinetController {
     );
   }
 
-  @Get('cabinet/ads/:id-:car/edit')
+  @Get('cabinet/ads/edit/:id-?:car?')
   async getCabinetAdsEdit(@Param() params, @Req() req: Request, @Res() res: Response) {
     if (!req.user) {
       return res.redirect('/enter');
@@ -112,10 +111,15 @@ export class CabinetController {
     const { id } = req.user as User;
     const contactsData = await this.userService.getContacts(id);
     const brandsData = await this.carService.getBrands();
-    const adData = await this.adsService.findAdsAuto(params.id);
+    const adData = await this.adsService.findOne(params.id, params.car);
     const cities = await this.locationService.getCities(adData.location.region);
     const photos = [];
-    const directoryPath = path.join(process.cwd(), 'uploads', 'ads', `${params.id}-${params.car}`);
+    let directoryPath: string;
+    if (params.car) {
+      directoryPath = path.join(process.cwd(), 'uploads', 'ads', `${params.id}-${params.car}`);
+    } else {
+      directoryPath = path.join(process.cwd(), 'uploads', 'ads', `${params.id}`);
+    }
 
     fs.readdir(directoryPath, function (err, files) {
       if (err) {
@@ -128,7 +132,7 @@ export class CabinetController {
     });
 
     return res.render(
-      `cabinet/ads/autoEdit`,
+      params.car ? 'cabinet/ads/autoEdit' : 'cabinet/ads/partEdit',
       { user: req.user, title: 'Редактирование объявления', ad: adData, photos,
       locations: locationsData, brands: brandsData, contacts: contactsData, cities, 
     colors: Colors },

@@ -17,186 +17,66 @@
         <div class="col-md-12">
           <div class="with_background with_padding">
             <div class="row form-group">
-              <label class="col-lg-3 control-label">Название:</label>
-              <div class="col-lg-9">
-                <input type="text" class="form-control" name="title">
+              <label class="col-lg-2 control-label">Название:</label>
+              <span class="required">*</span>
+              <div class="col-lg-10">
+                <input type="text" class="form-control" name="title" id="title">
               </div>
             </div>
 
             <div class="row form-group">
-              <label class="col-lg-3 control-label">Код запчасти:</label>
-              <div class="col-lg-9">
+              <label class="col-lg-2 control-label">Код запчасти:</label>
+              <div class="col-lg-10">
                 <input type="text" class="form-control" name="part_number">
               </div>
             </div>
 
             <div class="row form-group">
-              <label class="col-lg-3 control-label">Марка:</label>
-              <span class="required">*</span>
-              <div class="col-lg-9">
-                <select class="form-control" name="brand" id="brand">
-                  <option value="0" selected disabled>Выберите марку...</option>
+              <label class="col-lg-2 control-label">Для авто:</label>
+              <div class="col-lg-5">
+                <select class="form-control" id="brand">
+                  <option value="0" selected disabled>Марка...</option>
                   {{#each brands}}
                   <option value={{ this.brand }}>{{ this.brand }}</option>
                   {{/each}}
                 </select>
               </div>
-            </div>
-
-            <div class="row form-group">
-              <label class="col-lg-3 control-label">Модель:</label>
-              <span class="required">*</span>
-              <div class="col-lg-9">
-                <select class="form-control" name="model" id="model">
-                  <option value="0" selected disabled>Выберите модель...</option>
+              <div class="col-lg-5">
+                <select class="form-control" id="model">
+                  <option value="0" selected disabled>Модель...</option>
                 </select>
               </div>
-            </div>
-
-            <div class="row form-group">
-              <label class="col-lg-3 control-label">Владелец по документам:</label>
-              <span class="required">*</span>
-              <div class="col-lg-9">
-                <select class="form-control" name="is_owner" id="isOwner">
-                  <option selected disabled>Выберите...</option>
-                  <option value="true">Да</option>
-                  <option value="false">Нет</option>
-                </select>
+              <div class="col-lg-12" id="cars">
               </div>
             </div>
 
             <div class="row form-group">
-              <label class="col-lg-3 control-label">Цвет:</label>
-              <div class="col-lg-9">
-                <select class="form-control" name="color" id="color">
-                  <option selected disabled>Выберите...</option>
-                  <option value="1">Белый</option>
-                  <option value="2">Чёрный</option>
-                  <option value="3">Коричневый</option>
-                  <option value="4">Зелёный</option>
-                  <option value="5">Фиолетовый</option>
-                  <option value="6">Серый / Серебристый</option>
-                  <option value="7">Синий / Голубой</option>
-                  <option value="8">Жёлтый / Бежевый / Золотистый</option>
-                  <option value="9">Красный / Бордовый / Оранжевый / Розовый</option>
-                </select>
+              <label class="col-lg-2 control-label">Описание: </label>
+              <div class="col-lg-10">
+                <textarea rows="5" class="form-control" name="description" id="description"></textarea>
               </div>
             </div>
 
             <div class="row form-group">
-              <label class="col-lg-3 control-label">Год выпуска:</label>
-              <span class="required">*</span>
-              <div class="col-lg-9">
-                <input type="number" class="form-control" name="year" id="year">
-              </div>
-            </div>
-
-            <div class="row form-group">
-              <label class="col-lg-3 control-label">Тип кузова:</label>
-              <div class="col-lg-9">
-                <select class="form-control" name="body_type" id="bodyType">
-                  <option selected disabled>Выберите...</option>
-                  <option value="1">Седан</option>
-                  <option value="2">Хэтчбек 5 дв.</option>
-                  <option value="3">Хэтчбек 3 дв.</option>
-                  <option value="4">Джип 5 дв.</option>
-                  <option value="5">Джип 3 дв.</option>
-                  <option value="6">Универсал</option>
-                  <option value="7">Минивэн</option>
-                  <option value="8">Пикап</option>
-                  <option value="9">Купе</option>
-                  <option value="10">Кабриолет</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="row form-group">
-              <label class="col-lg-3 control-label">Привод:</label>
-              <span class="required">*</span>
-              <div class="col-lg-9">
-                <select class="form-control" name="drive" id="drive">
-                  <option selected disabled>Выберите...</option>
-                  <option value="1">Передний</option>
-                  <option value="2">Задний</option>
-                  <option value="3">Полный</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="row form-group">
-              <label class="col-lg-3 control-label">Тип двигателя:</label>
-              <span class="required">*</span>
-              <div class="col-lg-9">
-                <select class="form-control" name="engine_type" id="engineType">
-                  <option selected disabled>Выберите...</option>
-                  <option value="1">Бензин</option>
-                  <option value="2">Дизель</option>
-                  <option value="3">Гибрид</option>
-                  <option value="4">Электро</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="row form-group">
-              <label class="col-lg-3 control-label">КПП:</label>
-              <span class="required">*</span>
-              <div class="col-lg-9">
-                <select class="form-control" name="transmission" id="transmission">
-                  <option selected disabled>Выберите...</option>
-                  <option value="1">АКПП</option>
-                  <option value="2">Вариатор</option>
-                  <option value="3">Робот</option>
-                  <option value="4">Механика</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="row form-group">
-              <label class="col-lg-3 control-label">Пробег:</label>
-              <div class="col-lg-9">
-                <input type="number" class="form-control" name="mileage">
-              </div>
-            </div>
-
-            <div class="row form-group">
-              <label class="col-lg-3 control-label">Состояние:</label>
-              <span class="required">*</span>
-              <div class="col-lg-9">
-                <select class="form-control" name="state" id="state">
-                  <option selected disabled>Выберите...</option>
-                  <option value="1">Не требует ремонт</option>
-                  <option value="2">Требует ремонт</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="row form-group">
-              <label class="col-lg-3 control-label">Описание: </label>
-              <div class="col-lg-9">
-                <textarea rows="5" class="form-control" name="description"></textarea>
-              </div>
-            </div>
-
-            <div class="row form-group">
-              <label class="col-lg-3 control-label" for="user-profile-avatar">Фотографии</label>
-              <div class="col-lg-9">
+              <label class="col-lg-2 control-label" for="user-profile-avatar">Фотографии</label>
+              <div class="col-lg-10">
                 <input type="file" name="photos" id="photos">
                 <p class="help-block">Выберите до 10 фотографий</p>
               </div>
             </div>
 
             <div class="row form-group">
-              <label class="col-lg-3 control-label">Цена:</label>
+              <label class="col-lg-2 control-label">Цена:</label>
               <span class="required">*</span>
-              <div class="col-lg-9">
+              <div class="col-lg-10">
                 <input type="number" class="form-control" name="price" id="price">
               </div>
             </div>
 
             <div class="row form-group">
-              <label class="col-lg-3 control-label">Регион:</label>
+              <label class="col-lg-2 control-label">Регион:</label>
               <span class="required">*</span>
-              <div class="col-lg-9">
+              <div class="col-lg-10">
                 <select class="form-control" name="region" id="region">
                   <option value="0" selected disabled>Выберите регион...</option>
                   {{#each locations}}
@@ -207,9 +87,9 @@
             </div>
 
             <div class="city row form-group">
-              <label class="col-lg-3 control-label">Город:</label>
+              <label class="col-lg-2 control-label">Город:</label>
               <span class="required">*</span>
-              <div class="col-lg-9">
+              <div class="col-lg-10">
                 <select class="form-control" name="city" id="city">
                   <option value="0" selected disabled>Выберите город...</option>
                 </select>
@@ -217,9 +97,9 @@
             </div>
 
             <div class="row form-group">
-              <label class="col-lg-3 control-label">Контактные данные:</label>
+              <label class="col-lg-2 control-label">Контактные данные:</label>
               <span class="required">*</span>
-              <div class="col-lg-9">
+              <div class="col-lg-10">
                 <select class="form-control" name="contact_id" id="contact">
                   <option value="{{ contacts.id }}">{{ contacts.name }} ({{ contacts.phone }})</option>
                 </select>
@@ -230,7 +110,7 @@
 
             <div class="row">
               <div class="col-sm-12 text-right">
-                <input type="hidden" name="type" value="autos">
+                <input type="hidden" name="type" id="type" value="engine">
                 <button type="submit" class="theme_button wide_button">Отправить</button>
               </div>
             </div>

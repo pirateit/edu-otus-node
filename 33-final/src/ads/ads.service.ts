@@ -8,6 +8,7 @@ import { AdsAuto } from './models/auto.model';
 import { AdsPart } from './models/part.model';
 import { Op } from "sequelize";
 import { User } from '../user/user.model';
+import {AdsCarPart} from "./models/carPart.model";
 
 @Injectable()
 export class AdsService {
@@ -18,6 +19,8 @@ export class AdsService {
     private adsAutoModel: typeof AdsAuto,
     @InjectModel(AdsPart)
     private adsPartModel: typeof AdsPart,
+    @InjectModel(AdsCarPart)
+    private carPartModel: typeof AdsCarPart,
   ) { }
 
   getCategories(parentId: number | null = null): Promise<Category[]> {
@@ -41,6 +44,18 @@ export class AdsService {
     });
   }
 
+  getUserAdsParts(userId: number, page = 1, limit = 3): Promise<any> {
+    return this.adsPartModel.findAndCountAll({
+      where: {
+        user_id: userId
+      },
+      include: [Category, Location, Car, Contact],
+      order: [['created_at', 'DESC']],
+      limit,
+      offset: (page - 1) * limit
+    });
+  }
+
   getAdsAutos(filters?, page = 1, limit = 10): Promise<AdsAuto[]> {
     let carWhere: any = {};
 
@@ -49,7 +64,6 @@ export class AdsService {
     } else if (filters?.car.brand) {
       carWhere = { brand: filters.car.brand };
     }
-    console.log(filters);
 
     return this.adsAutoModel.findAll({
       where: {
@@ -71,10 +85,24 @@ export class AdsService {
     });
   }
 
-  findAdsAuto(id: number): Promise<AdsAuto> {
+  findOne(id: number, car?: number): Promise<AdsAuto | AdsPart> {
+    if (car) {
     return this.adsAutoModel.findByPk(id, {
       include: [Car, User, Contact, Location],
     });
+    } else {
+      return this.adsPartModel.findByPk(id, {
+        include: [Car, User, Contact, Location],
+      });
+    }
+  }
+
+  createCarPart(carId: number, adId: number): Promise<any> {
+    return this.carPartModel.create({ car_id: carId, ad_id: adId});
+  }
+
+  deletePartCars(adId: number): Promise<any> {
+    return this.carPartModel.destroy({ where: { ad_id: adId } });
   }
 
   getAdsParts(page = 1, limit = 10): Promise<AdsPart[]> {
@@ -90,11 +118,15 @@ export class AdsService {
     return this.adsAutoModel.create(data, { transaction: t });
   }
 
-  updateAuto(id: number, data: any, t?): Promise<any> {
-    return this.adsAutoModel.update(data, { where: { id: id }, transaction: t });
+  updateOne(id: number, data: any, car?: number, t?): Promise<any> {
+    if (car) {
+      return this.adsAutoModel.update(data, { where: { id: id }, transaction: t });
+    } else {
+      return this.adsPartModel.update(data, { where: { id: id }, transaction: t });
+    }
   }
 
-  parts(data: any): Promise<AdsPart> {
+  engine(data: any): Promise<AdsPart> {
     return this.adsPartModel.create(data);
   }
 
@@ -102,7 +134,7 @@ export class AdsService {
     if (car) {
       return this.adsAutoModel.update({ is_active: false }, { where: { id: id } });
     } else {
-
+      return this.adsPartModel.update({ is_active: false }, { where: { id: id } });
     }
   }
 
