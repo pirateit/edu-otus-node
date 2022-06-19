@@ -8,7 +8,7 @@ import { AdsAuto } from './models/auto.model';
 import { AdsPart } from './models/part.model';
 import { Op } from "sequelize";
 import { User } from '../user/user.model';
-import {AdsCarPart} from "./models/carPart.model";
+import { AdsCarPart } from "./models/carPart.model";
 
 @Injectable()
 export class AdsService {
@@ -32,7 +32,7 @@ export class AdsService {
     });
   }
 
-  getUserAdsAutos(userId: number, page = 1, limit = 3): Promise<any> {
+  getUserAdsAutos(userId: number, page = 1, limit = 5): Promise<any> {
     return this.adsAutoModel.findAndCountAll({
       where: {
         user_id: userId
@@ -44,7 +44,7 @@ export class AdsService {
     });
   }
 
-  getUserAdsParts(userId: number, page = 1, limit = 3): Promise<any> {
+  getUserAdsParts(userId: number, page = 1, limit = 5): Promise<any> {
     return this.adsPartModel.findAndCountAll({
       where: {
         user_id: userId
@@ -56,19 +56,19 @@ export class AdsService {
     });
   }
 
-  getAdsAutos(filters?, page = 1, limit = 10): Promise<AdsAuto[]> {
+  getAdsAutos(filters?, page = 1, limit = 5): Promise<any> {
     let carWhere: any = {};
 
-    if (filters?.car.model) {
+    if (filters?.car?.model) {
       carWhere = { model: filters.car.model };
-    } else if (filters?.car.brand) {
+    } else if (filters?.car?.brand) {
       carWhere = { brand: filters.car.brand };
     }
 
-    return this.adsAutoModel.findAll({
+    return this.adsAutoModel.findAndCountAll({
       where: {
         // TODO: change maximum price
-        price: { [Op.between]: [filters?.price.from ?? 0, filters?.price.to ?? 2147483647] },
+        price: { [Op.between]: [filters?.price?.from ?? 0, filters?.price?.to ?? 2147483647] },
         year: { [Op.between]: [filters?.year?.from ?? 0, filters?.year?.to ?? 2147483647] },
         state: filters?.state ?? { [Op.or]: [1, 2, null] },
         transmission: filters?.transmission ?? { [Op.or]: [1, 2, 3, 4] },
@@ -85,11 +85,37 @@ export class AdsService {
     });
   }
 
+  getAdsParts(filters?, page = 1, limit = 5): Promise<AdsPart[]> {
+    let carWhere: any = {};
+
+    if (filters?.car.model) {
+      carWhere = { model: filters.car.id };
+    } else if (filters?.car.brand) {
+      carWhere = { brand: filters.car.brand };
+    }
+
+    return this.adsPartModel.findAll({
+      where: {
+        title: {  [Op.iLike]:  `%${filters?.keywords?.join('%') ?? ''}%` },
+        // TODO: change maximum price
+        price: { [Op.between]: [filters?.price.from ?? 0, filters?.price.to ?? 2147483647] },
+        is_active: true,
+      },
+      include: [{
+        model: Car,
+        where: carWhere
+      }],
+      order: [['created_at', 'DESC']],
+      limit,
+      offset: (page - 1) * limit
+    });
+  }
+
   findOne(id: number, car?: number): Promise<AdsAuto | AdsPart> {
     if (car) {
-    return this.adsAutoModel.findByPk(id, {
-      include: [Car, User, Contact, Location],
-    });
+      return this.adsAutoModel.findByPk(id, {
+        include: [Car, User, Contact, Location],
+      });
     } else {
       return this.adsPartModel.findByPk(id, {
         include: [Car, User, Contact, Location],
@@ -98,20 +124,11 @@ export class AdsService {
   }
 
   createCarPart(carId: number, adId: number): Promise<any> {
-    return this.carPartModel.create({ car_id: carId, ad_id: adId});
+    return this.carPartModel.create({ car_id: carId, ad_id: adId });
   }
 
   deletePartCars(adId: number): Promise<any> {
     return this.carPartModel.destroy({ where: { ad_id: adId } });
-  }
-
-  getAdsParts(page = 1, limit = 10): Promise<AdsPart[]> {
-    return this.adsPartModel.findAll({
-      include: [Category, Location],
-      order: [['created_at', 'DESC']],
-      limit,
-      offset: (page - 1) * limit
-    });
   }
 
   autos(data: any, t?): Promise<AdsAuto> {
@@ -142,7 +159,7 @@ export class AdsService {
     if (car) {
       return this.adsAutoModel.update({ is_active: true }, { where: { id: id } });
     } else {
-
+      return this.adsPartModel.update({ is_active: true }, { where: { id: id } });
     }
   }
 }

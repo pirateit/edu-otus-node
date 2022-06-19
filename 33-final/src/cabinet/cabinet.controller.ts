@@ -12,6 +12,8 @@ import { AdsService } from '../ads/ads.service';
 import { CarService } from '../car/car.service';
 import { LocationService } from '../location/location.service';
 import { Colors } from '../ads/color.enum';
+import { Category as BlogCategory } from '../blog/category.enum';
+import { BlogService } from '../blog/blog.service';
 
 @Controller('my')
 @UseInterceptors(UserInterceptor)
@@ -23,6 +25,7 @@ export class CabinetController {
     private adsService: AdsService,
     private carService: CarService,
     private locationService: LocationService,
+    private blogService: BlogService,
   ) { }
 
   @Get('cabinet')
@@ -133,9 +136,11 @@ export class CabinetController {
 
     return res.render(
       params.car ? 'cabinet/ads/autoEdit' : 'cabinet/ads/partEdit',
-      { user: req.user, title: 'Редактирование объявления', ad: adData, photos,
-      locations: locationsData, brands: brandsData, contacts: contactsData, cities, 
-    colors: Colors },
+      {
+        user: req.user, title: 'Редактирование объявления', ad: adData, photos,
+        locations: locationsData, brands: brandsData, contacts: contactsData, cities,
+        colors: Colors
+      },
     );
   }
 
@@ -151,6 +156,36 @@ export class CabinetController {
     return res.render(
       'cabinet/adsEditContact',
       { user: req.user, title: 'Редактирование контактных данных', contact: contactData },
+    );
+  }
+
+  @Get('cabinet/blog')
+  async getCabinetBlogPage(@Query() query, @Req() req: Request, @Res() res: Response) {
+    if (!req.user) {
+      return res.redirect('/enter');
+    }
+
+    const { id } = req.user as User;
+
+    const postsData = await this.blogService.findUserPosts(id);
+
+    return res.render(
+      'cabinet/blog',
+      { user: req.user, title: 'Мои записи', posts: postsData, categories: BlogCategory },
+    );
+  }
+
+  @Get('cabinet/blog/add')
+  async getCabinetBlogAddPage(@Query() query, @Req() req: Request, @Res() res: Response) {
+    if (!req.user) {
+      return res.redirect('/enter');
+    }
+
+    const { id } = req.user as User;
+
+    return res.render(
+      'cabinet/blogAdd',
+      { user: req.user, title: 'Новая запись' },
     );
   }
 

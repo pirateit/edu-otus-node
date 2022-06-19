@@ -9,14 +9,17 @@ import { AdsModule } from '../ads/ads.module';
 import { Car } from '../car/car.model';
 import { CarModule } from '../car/car.module';
 import { LocationModule } from 'src/location/location.module';
+import { BlogModule } from 'src/blog/blog.module';
+import { Blog } from '../blog/blog.model';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User, Album, Car]),
+  imports: [SequelizeModule.forFeature([User, Album, Car, Blog]),
   UserModule,
   GalleryModule,
   AdsModule,
   CarModule,
   LocationModule,
+  BlogModule,
 ],
   controllers: [CabinetController]
 })

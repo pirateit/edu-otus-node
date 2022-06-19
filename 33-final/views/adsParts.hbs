@@ -1,0 +1,183 @@
+{{> header }}
+{{> navTop }}
+
+<section class="page_breadcrumbs cs background_cover section_padding_top_40 section_padding_bottom_40">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <h2>Автозапчасти</h2>
+        <ol class="breadcrumb">
+          <li>
+            <a href="/">
+              Главная
+            </a>
+          </li>
+          <li>
+            <a href="/ads">
+              Объявления
+            </a>
+          </li>
+          <li class="active">Автозапчасти</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ds section_padding_top_100 section_padding_bottom_100">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-7 col-md-8 col-lg-8">
+        <div class="columns-2">
+          <ul id="products" class="products list-unstyled grid-view">
+            {{#each ads}}
+            <li class="product type-product">
+              <div class="side-item no-content-padding">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="item-media">
+                      <a href="/ads/parts/{{this.id}}">
+                        <img src="/uploads/ads/{{this.id}}/{{this.photo}}" alt="">
+                        {{!-- <span class="newproduct">Новое</span> --}}
+                      </a>
+                      <div class="product-buttons">
+                        <a href="#" rel="nofollow" class="favorite_button">
+                          В избранное
+                        </a>
+                      </div>
+                    </div>
+                    <h3>
+                      <a href="/ads/parts/{{this.id}}">{{this.title}}</a>
+                    </h3>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="item-content">
+
+                      <h3>
+                        <a href="/ads/parts/{{this.id}}">{{this.title}}</a>
+                      </h3>
+
+                      <h4>Product Description</h4>
+                      <p class="product-description">
+                        {{this.description}}
+                      </p>
+
+                      <span class="price">
+                        <ins>
+                          <span class="amount">{{this.price}} &#8381;</span>
+                        </ins>
+                      </span>
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            {{/each}}
+          </ul>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12 text-center">
+
+            <ul class="pagination">
+              <li>
+                <a href="#">
+                  <span class="sr-only">Prev</span>
+                  <i class="fa  fa-angle-left"></i>
+                </a>
+              </li>
+              <li class="active">
+                <a href="#">1</a>
+              </li>
+              <li>
+                <a href="#">2</a>
+              </li>
+              <li>
+                <a href="#">3</a>
+              </li>
+              <li>
+                <a href="#">4</a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="sr-only">Next</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+
+
+      </div>
+      <!--eof .col-sm-8 (main content)-->
+
+
+      <!-- sidebar -->
+      <aside class="col-sm-5 col-md-4 col-lg-4">
+        <form method="get" action="/ads/parts" id="filter-ads-parts">
+
+          <div class="widget widget_search">
+            <div class="searchform form-inline">
+              <div class="form-group">
+                <label class="screen-reader-text" for="widget-search">Поиск:</label>
+                <input id="widget-search" type="text" value="" name="keywords" class="form-control"
+                  placeholder="Поиск...">
+              </div>
+              <button type="submit" class="theme_button">Поиск</button>
+            </div>
+          </div>
+
+          <div class="widget widget_archive">
+            <h3 class="widget-title text-center">Авто</h3>
+            <hr class="divider_30_3 zebra_bg">
+            <div class="form-group select-group">
+              <div class="input-group">
+                <select id="brand" name="brand" class="choice empty form-control">
+                  <option value="" selected="" data-default="">Марка...</option>
+                  {{#each brands}}
+                  <option value={{ this.brand }}>{{ this.brand }}</option>
+                  {{/each}}
+                </select>
+              </div>
+              <div class="input-group">
+                <select id="model" name="model" class="choice empty form-control">
+                  <option value="" selected="" data-default="">Модель...</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="widget widget_price_filter">
+            <h3 class="widget-title text-center">Цена</h3>
+            <hr class="divider_30_3 zebra_bg">
+            <div class="form-inline">
+              <div class="slider-range-price"></div>
+
+              <div class="form-group">
+                <label class="grey" for="slider_price_min">От:</label>
+                <input type="text" class="slider_price_min form-control text-center" id="slider_price_min"
+                  name="priceFrom" readonly>
+              </div>
+
+              <div class="form-group">
+                <label class="grey" for="slider_price_max"> до:</label>
+                <input type="text" class="slider_price_max form-control text-center" id="slider_price_max"
+                  name="priceTo" readonly>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-right">
+            <button type="submit" class="theme_button small_button color1">Найти</button>
+          </div>
+        </form>
+      </aside>
+    </div>
+  </div>
+</section>
+
+{{> footer }}

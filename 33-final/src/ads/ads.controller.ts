@@ -29,19 +29,20 @@ export class AdsController {
   @UseGuards(CheckAuthGuard)
   @Get('ads')
   async getAds(@Param() params, @Req() req, @Res() res) {
-    const adsAutosData = await this.adsService.getAdsAutos();
-    const adsPartsData = await this.adsService.getAdsParts();
-    const ads = {
-      autos: [],
-      parts: [],
-    };
+    // TODO: Show NEW ads
+    // const adsAutosData = await this.adsService.getAdsAutos();
+    // const adsPartsData = await this.adsService.getAdsParts();
+    // const ads = {
+    //   autos: [],
+    //   parts: [],
+    // };
 
-    adsAutosData.forEach(ad => ads.autos.push(ad));
-    adsPartsData.forEach(ad => ads.parts.push(ad));
+    // adsAutosData.forEach(ad => ads.autos.push(ad));
+    // adsPartsData.forEach(ad => ads.parts.push(ad));
 
     return res.render(
       'ads',
-      { user: req.user, title: 'Объявления', ads },
+      { user: req.user, title: 'Объявления' },
     );
   }
 
@@ -51,7 +52,7 @@ export class AdsController {
     const brandsData = await this.carService.getBrands();
 
     if (query) {
-      var filters: any = { car: {}, price: {}, year: {} };
+      var filters: any = {};
 
       for (let key in query) {
         if (!query[key]) delete query[key];
@@ -65,21 +66,27 @@ export class AdsController {
             case 'brand':
             case 'model':
               if (key === 'model') {
+                filters.car = {};
                 filters.car.model = query[key];
               } else if (key === 'brand' || query.model == '') {
+                filters.car = {};
                 filters.car.brand = query[key];
               }
               break;
             case 'priceFrom':
+              filters.price = {};
               filters.price.from = Number(query[key]);
               break;
             case 'priceTo':
+              filters.price = {};
               filters.price.to = Number(query[key]);
               break;
             case 'yearFrom':
+              filters.year = {};
               filters.year.from = Number(query[key]);
               break;
             case 'yearTo':
+              filters.year = {};
               filters.year.to = Number(query[key]);
               break;
             case 'state':
@@ -98,20 +105,74 @@ export class AdsController {
       }
     }
 
-    const adsAutosData = await this.adsService.getAdsAutos(filters);
-    // const ads = [];
-    // adsAutosData.forEach(ad => ads.push({ ...ad }));
+    const adsAutosData = await this.adsService.getAdsAutos(filters, query.page, query.limit);
+    filters.total = adsAutosData.count;
+    filters.page = query.page ?? 1;
+    filters.totalPages = filters.total < (Number(query.limit) || 5) ? 1 : Math.ceil(filters.total / (Number(query.limit) || 5));
+
 
     return res.render(
       'adsAutos',
-      { user: req.user, title: 'Объявления о продаже авто', ads: adsAutosData, brands: brandsData, engineTypes: EngineTypes, transmissions: Transmissions, drives: Drives },
+      { user: req.user, title: 'Объявления о продаже авто', ads: adsAutosData.rows, brands: brandsData, engineTypes: EngineTypes, transmissions: Transmissions, drives: Drives,
+      filters: Object.keys(filters).length === 0 ? null : filters, },
     );
   }
 
   @UseGuards(CheckAuthGuard)
-  @Get('ads/:id-:car')
+  @Get('ads/parts')
+  async getAdsParts(@Query() query, @Req() req, @Res() res) {
+    const brandsData = await this.carService.getBrands();
+
+    if (query) {
+      var filters: any = { car: {}, price: {} };
+
+      for (let key in query) {
+        if (!query[key]) delete query[key];
+      }
+
+      for (let key in query) {
+        if (!query[key]) {
+          delete query[key];
+        } else {
+          switch (key) {
+            case 'brand':
+              case 'model':
+                if (key === 'model') {
+                  filters.car.id = query[key];
+                } else if (key === 'brand' || query.model == '') {
+                  filters.car.brand = query[key];
+                }
+                break;
+            case 'priceFrom':
+              filters.price.from = Number(query[key]);
+              break;
+            case 'priceTo':
+              filters.price.to = Number(query[key]);
+              break;
+              case 'keywords':
+                const keywords = query.keywords.split(' ');
+
+                filters.keywords = keywords;
+                break;
+            default:
+              break;
+          }
+        }
+      }
+    }
+
+    const adsPartsData = await this.adsService.getAdsParts(filters, query.page);
+
+    return res.render(
+      'adsParts',
+      { user: req.user, title: 'Объявления о продаже авто', ads: adsPartsData, brands: brandsData },
+    );
+  }
+
+  @UseGuards(CheckAuthGuard)
+  @Get('ads/autos/:id-:car')
   async getAdsAuto(@Param() params, @Req() req, @Res() res) {
-    const adData = await this.adsService.findOne(Number(params.id));
+    const adData = await this.adsService.findOne(Number(params.id), Number(params.car));
     const photos = [];
     const directoryPath = path.join(process.cwd(), 'uploads', 'ads', `${params.id}-${params.car}`);
 
@@ -128,6 +189,37 @@ export class AdsController {
     return res.render(
       'adsAuto',
       { user: req.user, title: 'Объявления о продаже авто',
+      ad: adData,
+      photos,
+      colors: Colors,
+      engineTypes: EngineTypes,
+      transmissions: Transmissions,
+      drives: Drives,
+      bodyTypes: BodyTypes,
+    states: States, },
+    );
+  }
+
+  @UseGuards(CheckAuthGuard)
+  @Get('ads/parts/:id')
+  async getAdsPart(@Param() params, @Req() req, @Res() res) {
+    const adData = await this.adsService.findOne(Number(params.id));
+    const photos = [];
+    const directoryPath = path.join(process.cwd(), 'uploads', 'ads', `${params.id}-${params.car}`);
+
+    fs.readdir(directoryPath, function (err, files) {
+      if (err) {
+        return console.log('Unable to scan directory: ' + err);
+      }
+
+      files.forEach(function (file) {
+        photos.push(file);
+      });
+    });
+
+    return res.render(
+      'adsPart',
+      { user: req.user, title: 'Объявления о продаже запчасти',
       ad: adData,
       photos,
       colors: Colors,
@@ -186,7 +278,7 @@ export class AdsController {
       if (!req.body[key]) req.body[key] = null;
     }
 
-    if (body.car_id) body.car_id = body.model;
+    if (body.model) body.car_id = body.model;
     if (body.type === 'parts') body.category
     switch (body.type) {
       case 'autos':

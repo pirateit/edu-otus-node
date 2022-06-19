@@ -12,7 +12,7 @@ async function bootstrap() {
 
   app.use(cookieParser());
   app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.useStaticAssets(join(__dirname, '..', 'uploads'), {prefix: '/uploads'});
+  app.useStaticAssets(join(__dirname, '..', 'uploads'), { prefix: '/uploads' });
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
   hbs.registerPartials(join(__dirname, '..', 'views/partials'));
@@ -25,7 +25,15 @@ async function bootstrap() {
   hbs.registerHelper('gt', function (value1, value2) {
     return Number(value1) > Number(value2);
   });
-
+  hbs.registerHelper('times', function (n, block) {
+    var accum = '';
+    for (var i = 0; i < n; ++i)
+      accum += block.fn(i + 1);
+    return accum;
+  });
+  hbs.registerHelper("inc", function (value, options) {
+    return parseInt(value) + 1;
+  });
 
 
   await app.listen(3000);

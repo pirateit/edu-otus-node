@@ -20,6 +20,8 @@ import { AdsAuto } from './ads/models/auto.model';
 import { AdsPart } from './ads/models/part.model';
 import { AdsCarPart } from './ads/models/carPart.model';
 import { ConfigModule } from '@nestjs/config';
+import { BlogModule } from './blog/blog.module';
+import { Blog } from './blog/blog.model';
 
 @Module({
   imports: [
@@ -31,7 +33,7 @@ import { ConfigModule } from '@nestjs/config';
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
-      models: [Location, User, Contact, Album, Category, Car, AdsAuto, AdsPart, AdsCarPart],
+      models: [Location, User, Contact, Album, Category, Car, AdsAuto, AdsPart, AdsCarPart, Blog],
       autoLoadModels: true,
       synchronize: true,
     }),
@@ -43,6 +45,7 @@ import { ConfigModule } from '@nestjs/config';
     AdsModule,
     LocationModule,
     CarModule,
+    BlogModule,
   ],
   controllers: [AppController],
   providers: [AppService],
