@@ -1,0 +1,167 @@
+{{> header }}
+{{> navTop }}
+
+			<section class="page_breadcrumbs cs background_cover section_padding_top_40 section_padding_bottom_40">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-12 text-center">
+							<h2>{{title}}</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="/">Главная</a>
+								</li>
+                                <li>
+                                    <a href="/blogs">Блоги</a>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</section>
+
+<section class="ds section_padding_top_150 section_padding_bottom_150">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-10 col-sm-push-1">
+
+                <article class="single-post vertical-item content-padding with_border ">
+                    <div class="entry-thumbnail item-media">
+                        <img src="/uploads/blogs/covers/{{post.cover}}" alt="">
+                    </div>
+                    <div class="item-content top-zebra-border">
+
+                        <header class="entry-header content-justify">
+
+                            <h3 class="entry-title">
+                                <a href="/blogs/{{post.id}}" rel="bookmark">{{post.title}}</a>
+                            </h3>
+
+                            <a href="/members/{{post.author.id}}" class="entry-author">{{post.author.first_name}} {{post.author.last_name}}</a>
+
+
+                        </header>
+                        <!-- .entry-header -->
+
+                        <div class="entry-content">
+                            <p>
+                                {{post.content}}
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+                <div class="author-meta side-item content-padding cs">
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="item-media">
+                                <img src="" alt="">
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="item-content">
+                                <h4 class="bold text-uppercase">{{post.author.first_name}} {{post.author.last_name}}</h4>
+                                <hr class="divider_30_3 divider_left zebra_bg divider_20">
+
+                                <p>{{lookup roles post.author.role}}</p>
+
+                                <div class="darklinks">
+                                    <a href="#" class="social-icon soc-vkontakte"></a>
+                                    <a href="#" class="social-icon soc-instagram"></a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="with_padding with_border comments-wrapper">
+                    <div class="comment-respond" id="respond">
+                        {{#unless (not user)}}
+                        <div class="comment-form topmargin_20" id="form-comment">
+                            <form class="row columns_margin_bottom_30" id="form-blog-comment">
+                                <div class="col-md-12">
+                                    <p class="comment-form-chat">
+                                        <label for="comment">Комментарий</label>
+<!--                                    <i class="rt-icon2-pencil3"></i>-->
+                                        <textarea rows="8" cols="45" name="content" id="content" class="form-control" placeholder="Комментарий..."></textarea>
+                                    </p>
+                                </div>
+
+                            </form>
+                            <div class="col-sm-12" id="message-box"></div>
+
+                            <p class="form-submit text-center">
+                                <input type="hidden" id="id" name="post_id" value="{{post.id}}">
+                                <button type="submit" id="submit" name="submit" form="form-blog-comment" class="theme_button">Отправить</button>
+                                <button type="reset" id="reset" class="theme_button">Clear Form</button>
+                            </p>
+                        </div>
+                        {{/unless}}
+                    </div>
+                    <!-- #respond -->
+
+                    <div class="comments-area" id="comments">
+                        <ol class="comment-list">
+                            <li class="comment even thread-even depth-1 parent">
+                                {{#each post.comments}}
+                                <article class="comment-body media">
+                                    <div class="media-left">
+                                        <img class="media-object" alt="" src="">
+                                    </div>
+                                    <div class="media-body">
+									    <span class="reply">
+										    <a href="#respond">
+											    <i class="fa fa-reply"></i>
+											</a>
+										</span>
+                                        <div class="comment-meta darklinks">
+                                            <a class="author_url" rel="external nofollow" href="#">{{this.author.first_name}} {{this.author.last_name}}</a>
+                                        </div>
+                                        <p>{{this.content}}</p>
+                                        <span class="comment-date">
+											<time datetime="2017-01-08T15:05:23+00:00" class="entry-date">{{this.created_at}}</time>
+										</span>
+                                    </div>
+                                </article>
+                                    {{#each this.replies}}
+                                        <ol class="children">
+                                            <li class="comment byuser even depth-3">
+                                                <article class="comment-body media">
+                                                    <div class="media-left">
+                                                        <img class="media-object" alt="" src="">
+                                                    </div>
+                                                    <div class="media-body">
+																	<span class="reply">
+																		<a href="#respond">
+																			<i class="fa fa-reply"></i>
+																		</a>
+																	</span>
+                                                        <div class="comment-meta darklinks">
+                                                            <a class="author_url" rel="external nofollow" href="#">{{this.author.first_name}} {{this.author.last_name}}</a>
+                                                        </div>
+                                                        <p>{{this.content}}</p>
+
+                                                        <span class="comment-date">
+															<time datetime="2017-01-08T15:05:23+00:00" class="entry-date">{{this.created_at}}</time>
+														</span>
+                                                    </div>
+                                                </article>
+                                            </li>
+                                        </ol>
+                                    {{/each}}
+                                {{/each}}
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{> footer }}

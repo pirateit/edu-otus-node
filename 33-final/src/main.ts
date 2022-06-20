@@ -34,6 +34,14 @@ async function bootstrap() {
   hbs.registerHelper("inc", function (value, options) {
     return parseInt(value) + 1;
   });
+  hbs.registerHelper("truncate", function (string, options) {
+    console.log(string)
+    if (string.length > 250) {
+      return string.substring(0, 249) + "...";
+    }
+
+    return string
+  });
 
 
   await app.listen(3000);
