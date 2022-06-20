@@ -1,0 +1,161 @@
+{{> header }}
+{{> navCabinet }}
+
+<section class="ls ms section_padding_top_50 section_padding_bottom_50 columns_padding_5">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <h3>{{ title }}</h3>
+      </div>
+    </div>
+    <!-- .row -->
+
+    <form class="form-horizontal" action="#" id="form-blog-update">
+
+      <div class="row">
+        <div class="col-md-8">
+          <div class="with_background with_padding">
+            <h4>
+              Данные
+              <span class="pull-right">
+                <button type="submit" class="theme_button small_button">Сохранить</button>
+              </span>
+
+            </h4>
+
+            <hr>
+
+            <div class="row form-group">
+              <label class="col-lg-3 control-label">Заголовок: </label>
+              <span class="required">*</span>
+              <div class="col-lg-9">
+                <input type="text" class="form-control" name="title" id="title" value="{{post.title}}">
+              </div>
+            </div>
+
+            <div class="row form-group">
+              <label class="col-lg-3 control-label">Категория: </label>
+              <span class="required">*</span>
+              <select class="form-control" name="category" id="category">
+                <option value="1"{{#if (eq post.category 1)}} selected{{/if}}>Обо всём</option>
+                <option value="2"{{#if (eq post.category 2)}} selected{{/if}}>Тест-драйв</option>
+                <option value="3"{{#if (eq post.category 3)}} selected{{/if}}>Обслуживание</option>
+                <option value="4"{{#if (eq post.category 4)}} selected{{/if}}>Путешествия</option>
+                <option value="5"{{#if (eq post.category 5)}} selected{{/if}}>Мероприятия</option>
+              </select>
+            </div>
+
+            <div class="row form-group">
+              <label class="col-lg-3 control-label">Текст: </label>
+              <span class="required">*</span>
+              <div class="col-lg-9">
+                <textarea rows="8" class="form-control" name="content" id="content">{{post.content}}</textarea>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12" id="message-box"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12 text-right">
+                  <input type="hidden" id="id" value="{{post.id}}">
+                <button type="submit" class="theme_button wide_button">Сохранить</button>
+              </div>
+            </div>
+            <!-- .row  -->
+
+          </div>
+          <!-- .with_background -->
+
+        </div>
+        <!-- .col-* -->
+
+
+        <div class="col-md-4">
+
+          <div class="with_background with_padding bottommargin_10">
+
+            <h4>Публикация</h4>
+
+            <hr>
+
+            {{!-- <div class="row form-group">
+              <label class="col-lg-3 control-label">Publish date: </label>
+              <div class="col-lg-9">
+                <input type="date" class="form-control">
+              </div>
+            </div>
+
+            <div class="row form-group">
+              <label class="col-lg-3 control-label">Publish time: </label>
+              <div class="col-lg-9">
+                <input type="time" class="form-control">
+              </div>
+            </div> --}}
+
+            <div class="row">
+              <label class="col-lg-3 control-label">Статус: </label>
+              <div class="col-lg-9">
+                <label class="radio-inline">
+                  <input type="radio" name="is_active" value="false" checked="checked"> Черновик
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="is_active" value="true"{{#if post.is_active}} checked="checked"{{/if}}> Опубликовано
+                </label>
+              </div>
+            </div>
+
+
+          </div>
+          <!-- .with_background -->
+
+          <div class="with_background with_padding">
+            <h4>Обложка</h4>
+
+            <hr>
+
+            <div class="item-editable bottommargin_20">
+                {{#if post.cover}}
+                <div class="item-editable bottommargin_20">
+                    <div class="item-media">
+                        <img src="/uploads/blogs/covers/{{post.cover}}" alt="...">
+                    </div>
+                </div>
+                {{/if}}
+              <input type="file" name="cover" id="cover">
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="ls">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        &copy; Copyrights 2017
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+<!-- eof #box_wrapper -->
+</div>
+<!-- eof #canvas -->
+<script src="/js/vendor/inputmask.min.js"></script>
+<script src="/js/vendor/just-validate.production.min.js"></script>
+<script src="/js/vendor/axios.min.js"></script>
+<script src="/js/compressed.js"></script>
+<script src="/js/vendor/Chart.bundle.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/autoclub.js"></script>
+<script src="/js/admin-charts.js"></script>
+
+</body>
+
+</html>

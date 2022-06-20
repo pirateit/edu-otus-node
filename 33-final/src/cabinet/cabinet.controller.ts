@@ -189,6 +189,22 @@ export class CabinetController {
     );
   }
 
+  @Get('cabinet/blog/:id/edit')
+  async getCabinetBlogEditPage(@Param() params, @Req() req: Request, @Res() res: Response) {
+    if (!req.user) {
+      return res.redirect('/enter');
+    }
+
+    const { id } = req.user as User;
+
+    const postData = await this.blogService.findOne(params.id);
+
+    return res.render(
+        'cabinet/blogEdit',
+        { user: req.user, title: 'Редактирование записи', post: postData, categories: BlogCategory },
+    );
+  }
+
   @Get('cabinet/gallery')
   async getCabinetGalleryPage(@Req() req: Request, @Res() res: Response) {
     let categories = [];

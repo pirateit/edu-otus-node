@@ -1022,5 +1022,80 @@ if (document.getElementById('form-blog-add')) {
           messageBox.scrollIntoView();
         });
     });
+}
 
+if (document.getElementById('form-blog-update')) {
+  const validation = new JustValidate('#form-blog-update');
+
+  validation
+      .addField('#title', [
+        {
+          rule: 'required',
+          errorMessage: 'Обязательное поле',
+        },
+      ])
+      .addField('#content', [
+        {
+          rule: 'required',
+          errorMessage: 'Обязательное поле',
+        },
+      ])
+      .addField('#category', [
+        {
+          rule: 'required',
+          errorMessage: 'Обязательное поле',
+        },
+      ])
+      .onSuccess((event) => {
+        var postId = document.getElementById('id').value;
+        var formData = new FormData(document.getElementById('form-blog-update'));
+
+        var messageBox = document.getElementById('message-box');
+        if (messageBox.firstChild) messageBox.removeChild(messageBox.firstChild);
+
+        instance.put(`/api/blog/${postId}`, formData)
+            .then(() => {
+              window.location.replace('/my/cabinet/blog');
+            })
+            .catch((err) => {
+              messageBox.append(createErrorMessage(err.response.data.message))
+              messageBox.scrollIntoView();
+            });
+      });
+}
+
+if (document.getElementById('filter-blogs')) {
+  document.getElementById('category').addEventListener('change', (evt) => {
+    var filters = new URLSearchParams(window.location.search);
+    filters.set('cat', evt.target.value);
+    window.location.search = filters.toString();
+  });
+}
+
+if (document.getElementById('form-blog-comment')) {
+  const validation = new JustValidate('#form-blog-comment');
+
+  validation
+      .addField('#content', [
+        {
+          rule: 'required',
+          errorMessage: 'Обязательное поле',
+        },
+      ])
+      .onSuccess((event) => {
+        var postId = document.getElementById('id').value;
+        var formData = new FormData(document.getElementById('form-blog-comment'));
+
+        var messageBox = document.getElementById('message-box');
+        if (messageBox.firstChild) messageBox.removeChild(messageBox.firstChild);
+
+        instance.post(`/api/blog/${postId}/comment`, formData)
+            .then(() => {
+              window.location.replace(`/blogs/${postId}`);
+            })
+            .catch((err) => {
+              messageBox.append(createErrorMessage(err.response.data.message))
+              messageBox.scrollIntoView();
+            });
+      });
 }

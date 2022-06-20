@@ -10,10 +10,10 @@ import { Car } from '../car/car.model';
 import { CarModule } from '../car/car.module';
 import { LocationModule } from 'src/location/location.module';
 import { BlogModule } from 'src/blog/blog.module';
-import { Blog } from '../blog/blog.model';
+import { BlogPost } from '../blog/post.model';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User, Album, Car, Blog]),
+  imports: [SequelizeModule.forFeature([User, Album, Car, BlogPost]),
   UserModule,
   GalleryModule,
   AdsModule,
