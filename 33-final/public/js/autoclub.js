@@ -1099,3 +1099,31 @@ if (document.getElementById('form-blog-comment')) {
             });
       });
 }
+
+if (document.getElementById('form-user-update')) {
+  const validation = new JustValidate('#form-user-update');
+
+  validation
+    .addField('#phone', [
+      {
+        rule: 'required',
+        errorMessage: 'Обязательное поле',
+      },
+    ])
+    .onSuccess((event) => {
+      var id = document.getElementById('id').value;
+      var formData = new FormData(document.getElementById('form-user-update'));
+
+      var messageBox = document.getElementById('message-box');
+      if (messageBox.firstChild) messageBox.removeChild(messageBox.firstChild);
+
+      instance.put(`/api/users/${id}`, formData)
+        .then((res) => {
+          window.location.replace('/my/cabinet/profile');
+        })
+        .catch((err) => {
+          messageBox.append(createErrorMessage(err.response.data.message))
+          messageBox.scrollIntoView();
+        });
+    });
+}

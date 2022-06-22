@@ -20,7 +20,7 @@
 											</a>
 											<ul>
 												<li>
-													<a href="/my/profile">
+													<a href="/my/cabinet/profile">
 														<i class="fa fa-user"></i>
 														Профиль
 													</a>
@@ -57,6 +57,7 @@
 									</li>
 								</ul>
 
+                {{#if (gt user.role.id 0)}}
 								<h3 class="dark_bg_color">Объявления</h3>
 								<ul class="nav menu-side-click">
 									<li>
@@ -95,7 +96,9 @@
 										</a>
 									</li>
 								</ul>
+                  {{/if}}
 
+      {{#if (gt user.role.id 0)}}
                 <h3 class="dark_bg_color">Блог</h3>
 								<ul class="nav menu-side-click">
 									<li>
@@ -111,7 +114,8 @@
                                         </a>
                                     </li>
 								</ul>
-
+        {{/if}}
+      {{#if (gt user.role.id 1)}}
 								<h3 class="dark_bg_color">Галерея</h3>
 								<ul class="nav menu-side-click">
 									<li>
@@ -127,6 +131,7 @@
                                         </a>
                                     </li>
 								</ul>
+        {{/if}}
 							</nav>
 							<!-- eof main side nav -->
 						</div>
@@ -145,14 +150,14 @@
 							<div class="dropdown-menu" aria-labelledby="user-dropdown-menu">
 								<ul class="nav greylinks">
 									<li>
-										<a href="/my/profile">
+										<a href="/my/cabinet/profile">
 											<i class="fa fa-user"></i>
 											Профиль
 										</a>
 									</li>
 
 									<li>
-										<a href="admin_signin.html">
+										<a href="/logout">
 											<i class="fa fa-sign-out"></i>
 											Выйти
 										</a>

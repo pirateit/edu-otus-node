@@ -15,6 +15,10 @@ import { Colors } from '../ads/color.enum';
 import { Category as BlogCategory } from '../blog/category.enum';
 import { BlogService } from '../blog/blog.service';
 
+interface Role {
+  role: { id: number; title: string; }
+}
+
 @Controller('my')
 @UseInterceptors(UserInterceptor)
 @UseGuards(CheckAuthGuard)
@@ -28,15 +32,42 @@ export class CabinetController {
     private blogService: BlogService,
   ) { }
 
+  @Get()
+  getMyPage(@Req() req: Request, @Res() res: Response) {
+    if (!req.user) {
+      return res.redirect('/enter');
+    } else {
+      return res.redirect('/');
+    }
+
+    return res.render(
+      'my',
+      { user: req.user, title: 'Мои данные' },
+    );
+  }
+
   @Get('cabinet')
   getCabinetPage(@Req() req: Request, @Res() res: Response) {
     if (!req.user) {
       return res.redirect('/enter');
     }
+    const { role } = req.user as User;
 
     return res.render(
       'cabinet/index',
       { user: req.user, title: 'Мой кабинет' },
+    );
+  }
+
+  @Get('cabinet/profile')
+  getProfilePage(@Req() req: Request, @Res() res: Response) {
+    if (!req.user) {
+      return res.redirect('/enter');
+    }
+
+    return res.render(
+      'cabinet/profile',
+      { user: req.user, title: 'Редактирование пользователя' },
     );
   }
 
@@ -208,9 +239,12 @@ export class CabinetController {
   @Get('cabinet/gallery')
   async getCabinetGalleryPage(@Req() req: Request, @Res() res: Response) {
     let categories = [];
+    const { role } = req.user as Role;
 
-    if (!req.user) {
+    if (!role) {
       return res.redirect('/enter');
+    } else if (role.id < 2) {
+      return res.redirect('/my/cabinet');
     }
 
     for (let key in Category) {
@@ -229,9 +263,12 @@ export class CabinetController {
   @Get('cabinet/gallery/add')
   getCabinetGalleryAddPage(@Req() req: Request, @Res() res: Response) {
     let categories = [];
+    const { role } = req.user as Role;
 
-    if (!req.user) {
+    if (!role) {
       return res.redirect('/enter');
+    } else if (role.id < 2) {
+      return res.redirect('/my/cabinet');
     }
 
     for (let key in Category) {
@@ -247,12 +284,16 @@ export class CabinetController {
 
   @Get('cabinet/gallery/:id/edit')
   async getCabinetGalleryEditPage(@Param() params, @Req() req: Request, @Res() res: Response) {
+    const { role } = req.user as Role;
+
+    if (!role) {
+      return res.redirect('/enter');
+    } else if (role.id < 2) {
+      return res.redirect('/my/cabinet');
+    }
+
     let categories = [];
     const albumData = await this.galleryService.findOne(params.id);
-
-    if (!req.user) {
-      return res.redirect('/enter');
-    }
 
     for (let key in Category) {
       let value = Category[key];
@@ -267,6 +308,14 @@ export class CabinetController {
 
   @Get('cabinet/gallery/:id/add')
   async getCabinetPhotosAddPage(@Param() params, @Req() req: Request, @Res() res: Response) {
+    const { role } = req.user as Role;
+
+    if (!role) {
+      return res.redirect('/enter');
+    } else if (role.id < 2) {
+      return res.redirect('/my/cabinet');
+    }
+
     const photos = [];
     const directoryPath = path.join(process.cwd(), 'uploads', 'gallery', params.id);
 
@@ -279,10 +328,6 @@ export class CabinetController {
         photos.push(file);
       });
     });
-
-    if (!req.user) {
-      return res.redirect('/enter');
-    }
 
     return res.render(
       'cabinet/galleryAddPhotos',

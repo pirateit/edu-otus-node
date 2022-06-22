@@ -1,6 +1,7 @@
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
 import { Role } from '../auth/role.enum';
 import { UserService } from './user.service';
+import { User } from "./user.model";
 
 @Injectable()
 export class UserInterceptor implements NestInterceptor {
@@ -12,7 +13,7 @@ export class UserInterceptor implements NestInterceptor {
     if (request.user) {
       request.user = await this.userService.findOneById(request.user.id);
       request.user.role = {
-        id: request.user.role.id,
+        id: request.user.role,
         title: Object.values(Role)[1],
       };
     }

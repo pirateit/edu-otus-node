@@ -1,0 +1,134 @@
+{{> header }}
+{{> navCabinet }}
+
+<section class="ls ms section_padding_top_50 section_padding_bottom_50 columns_padding_5">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <h3>{{title}}</h3>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <form class="form-horizontal" id="form-user-update">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="with_background with_padding">
+                <h4>Информация</h4>
+                <hr>
+                <div class="row form-group">
+                  <label class="col-lg-3 control-label" for="user-profile-avatar">Фото</label>
+                  <div class="col-lg-9">
+                    <input type="file" id="user-profile-avatar" name="avatar">
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="col-lg-3 control-label">Имя:</label>
+                  <div class="col-lg-9">
+                    <input type="text" class="form-control" name="first_name" value="{{user.first_name}}">
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <label class="col-lg-3 control-label">Фамилия:</label>
+                  <div class="col-lg-9">
+                    <input type="text" class="form-control" name="last_name" value="{{user.last_name}}">
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <label class="col-lg-3 control-label">Email:</label>
+                  <div class="col-lg-9">
+                    <input type="text" class="form-control" name="email" value="{{user.email}}">
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <label class="col-lg-3 control-label">Номер телефона:</label>
+                  <div class="col-lg-9">
+                    <input type="text" class="form-control" name="phone" id="phone" value="{{user.phone}}">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="with_background with_padding">
+                <h4>Социальные сети</h4>
+                <hr>
+                <div class="row form-group">
+                  <label class="col-lg-3 control-label">ВКонтакте:</label>
+                  <div class="col-lg-9">
+                    <input type="text" class="form-control">
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <label class="col-lg-3 control-label">Instagram:</label>
+                  <div class="col-lg-9">
+                    <input type="text" class="form-control">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="with_background with_padding">
+                <h4>Безопасность</h4>
+                <hr>
+                <div class="row form-group">
+                  <label class="col-lg-3 control-label">Новый пароль:</label>
+                  <div class="col-lg-9">
+                    <input type="password" class="form-control" name="password">
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <label class="col-lg-3 control-label">Новый пароль повторно:</label>
+                  <div class="col-lg-9">
+                    <input type="password" class="form-control">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div>
+                <div class="col-sm-12" id="message-box"></div>
+                <input type="hidden" id="id" value="{{user.id}}">
+                <button type="submit" class="theme_button wide_button">Сохранить</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ls">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        &copy; Copyrights 2017
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+<!-- eof #box_wrapper -->
+</div>
+<!-- eof #canvas -->
+<script src="/js/vendor/inputmask.min.js"></script>
+<script src="/js/vendor/just-validate.production.min.js"></script>
+<script src="/js/vendor/axios.min.js"></script>
+<script src="/js/compressed.js"></script>
+<script src="/js/vendor/Chart.bundle.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/autoclub.js"></script>
+<script src="/js/admin-charts.js"></script>
+
+</body>
+
+</html>

@@ -22,11 +22,11 @@ export class User extends Model {
   last_name: string;
 
   @Unique
-  @Is('PhoneNumber', (value) => {
-    if (typeof value !== 'bigint' && value.length !== 11) {
-      throw new Error('Некорректный формат телефонного номера')
-    }
-  })
+  // @Is('PhoneNumber', (value) => {
+  //   if (typeof value !== 'bigint' && value.length !== 11) {
+  //     throw new Error('Некорректный формат телефонного номера')
+  //   }
+  // })
   @Column(DataType.BIGINT)
   phone: number;
 
@@ -76,6 +76,14 @@ export class User extends Model {
 
     if (instance.phone) {
       instance.phone = Number(instance.phone);
+    }
+
+    if (instance.first_name) {
+      instance.first_name = instance.first_name[0].toUpperCase() + instance.first_name.slice(1);
+    }
+
+    if (instance.last_name) {
+      instance.last_name = instance.last_name[0].toUpperCase() + instance.last_name.slice(1);
     }
   }
 }
