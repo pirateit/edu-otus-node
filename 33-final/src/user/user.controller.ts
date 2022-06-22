@@ -1,10 +1,11 @@
 import { BadRequestException, Body, Controller, Req, Get, Post, UseInterceptors, UseGuards, Res, Put } from '@nestjs/common';
 import { Response, Request } from 'express';
-import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import {AnyFilesInterceptor, FileInterceptor} from '@nestjs/platform-express';
 import { CheckAuthGuard } from '../auth/check-auth.guard';
 import { UserService } from './user.service';
 import { User } from './user.model';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import {diskStorage} from "multer";
 
 @Controller()
 export class UserController {
@@ -37,6 +38,42 @@ export class UserController {
     }
 
     return this.userService.create(userData);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('api/users/:id')
+  @UseInterceptors(FileInterceptor('cover', {
+    storage: diskStorage({
+      destination: './uploads/users/avatars',
+      filename: (req, file, callback) => {
+        var uniqueSuffix = Date.now();
+
+        callback(null, uniqueSuffix + '-' + file.originalname);
+      }
+    }),
+    fileFilter: (req, file, callback) => {
+      if (!file.originalname.match(/\.(jpg|JPG|jpeg|png|webp)$/)) {
+        return callback(new Error('Only image files are allowed!'), false);
+      }
+      callback(null, true);
+    },
+  }))
+  async updateUser(@Req() req: Request, @Body() body): Promise<boolean> {
+    const { id } = req.user as User;
+
+    if (!body.phone) throw new BadRequestException("Не заполнено поле Номер телефона");
+
+    for (let key in body) {
+      if (!body[key]) delete body[key];
+    }
+
+    if (body.phone) {
+      body.phone = Number('7' + body.phone.replace(/[\+\s()-]/g, '').slice(-10));
+    }
+
+    await this.userService.update(id, body)
+
+    return true;
   }
 
   @UseGuards(JwtAuthGuard)

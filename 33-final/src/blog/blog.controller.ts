@@ -85,7 +85,7 @@ export class BlogController {
     postData.author_id = id;
 
     if (file) postData.cover = file.filename;
-    
+
     await this.blogService.create(postData);
 
     return true;

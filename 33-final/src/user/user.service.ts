@@ -39,6 +39,10 @@ export class UserService {
     return true;
   }
 
+  update(userId, userData): Promise<any> {
+    return this.userModel.update(userData, { where: { id: userId } });
+  }
+
   getContacts(userId: number): Promise<Contact> {
     return this.contactModel.findOne({ where: { user_id: userId } });
   }
